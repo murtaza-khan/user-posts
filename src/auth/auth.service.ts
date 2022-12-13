@@ -36,12 +36,11 @@ export class AuthService {
   }
   async login(person: any) {
     const payload = { email: person.email, sub: person._id };
-    // tslint:disable-next-line: variable-name
     const access_token = this.jwtService.sign(payload);
-    person.access_token = 'Bearer ' + access_token;
-    if (person.access_token) {
-      this.personService.updateAccessToken(person);
-      return person.access_token;
-    }
+    const user: any = await this.personService.findByCriteria({
+      email: person.email,
+    });
+    delete user.password;
+    return { accessToken: access_token, user };
   }
 }

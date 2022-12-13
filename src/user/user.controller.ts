@@ -19,6 +19,7 @@ export class UserController {
   async getAll(): Promise<any> {
     return await this.userService.findAll();
   }
+  
   @UseGuards(AuthGuard('jwt'))
   @Get(':id/user')
   async getOne(@Param('id') id): Promise<any> {
@@ -26,10 +27,12 @@ export class UserController {
     return user;
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('create')
   async create(@Body() userData: UserDto): Promise<any> {
     return await this.userService.save(userData);
   }
+
   @UseGuards(AuthGuard('jwt'))
   @Put(':id/update')
   async update(@Param('id') id, @Body() userData: any): Promise<any> {

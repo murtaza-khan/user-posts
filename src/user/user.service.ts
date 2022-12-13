@@ -13,6 +13,7 @@ export class UserService {
   async save(user: any): Promise<User> {
     return new Promise((resolve, reject) => {
       const p = user;
+      
       this.beforeCreate(p)
         .then(async res => {
           p.password = await passowrdBcrypt(p.password);

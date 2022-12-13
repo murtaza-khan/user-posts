@@ -1,4 +1,6 @@
 import { Document } from 'mongoose';
+import { OfficeType, OralProficiency, RepresentType } from '../../common/enums';
+import { AddressType, BusinessType, ExperienceType } from '../Dto/profile.types';
 export interface Profile extends Document {
   firmName: string;
   firmWebsite: string;
@@ -6,17 +8,20 @@ export interface Profile extends Document {
   ratePerHourMin?: string;
   ratePerHourMax?: string;
   onContingency: string;
-  represent: ['Individuals', 'Companies', 'Both'];
+  represent: RepresentType;
   practiceAreas: [string];
   practicingLawSince: Date;
   licenseNumber: string;
   locationPermitted: string;
   biography: string;
-  officeType: ['Physical', 'Virtual'];
+  officeType: OfficeType;
   primaryLanguage: string;
   secondaryLanguage: string;
-  oralProficiency: ['Native', 'Fluent', 'Intermediate', 'Beginner'];
-  writtenProficiency:  ['Native', 'Fluent', 'Intermediate', 'Beginner'];
+  oralProficiency: OralProficiency;
+  writtenProficiency:  OralProficiency;
+  experience:ExperienceType;
+  business: BusinessType;
+  address: AddressType;
   /**
    * userId is relationId business with user
    */

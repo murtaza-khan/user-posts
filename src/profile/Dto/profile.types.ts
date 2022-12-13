@@ -1,9 +1,4 @@
-import {
-  IsEmail,
-  IsString,
-  IsNotEmpty,
-  IsEnum,
-} from 'class-validator';
+import { IsEmail, IsString, IsNotEmpty, IsEnum } from 'class-validator';
 import { UserType } from '../../common/enums';
 
 class DefaultMessageType {
@@ -54,7 +49,6 @@ class AddressType {
 
   @IsNotEmpty()
   country: string;
-
 }
 
 class BusinessType {
@@ -77,13 +71,10 @@ class BusinessType {
   website: string;
 
   @IsNotEmpty()
-  businessDescription:string;
-
+  businessDescription: string;
 }
 
-
 class ExperienceType {
-
   @IsNotEmpty()
   title: string;
 
@@ -98,12 +89,19 @@ class ExperienceType {
 
   @IsNotEmpty()
   court: string;
-} 
+}
+
+class Language {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+}
 export {
   UserDto,
   DefaultMessageType,
   LoginType,
   AddressType,
   BusinessType,
-  ExperienceType
+  ExperienceType,
+  Language
 };
