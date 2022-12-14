@@ -10,7 +10,7 @@ export const ProfileSchema = new mongoose.Schema({
   ratePerHourMax: String,
   onContingency: String,
   represent: String,
-  practiceAreas: [String],
+  practiceAreas: Array,
   practicingLawSince: String,
   licenseNumber: String,
   locationPermitted: String,
@@ -20,9 +20,9 @@ export const ProfileSchema = new mongoose.Schema({
   secondaryLanguage: String,
   oralProficiency: String,
   writtenProficiency: String,
-  experience: [],
-  business: [],
-  address: [],
+  experience: Array,
+  business:Array,
+  address: Array,
   /**
    * userId
    */
