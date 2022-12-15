@@ -1,9 +1,4 @@
-import {
-  IsEmail,
-  IsString,
-  IsNotEmpty,
-  IsEnum,
-} from 'class-validator';
+import { IsEmail, IsString, IsNotEmpty, IsEnum } from 'class-validator';
 import { UserType } from '../../common/enums';
 
 class DefaultMessageType {
@@ -35,12 +30,14 @@ class UserDto {
   @IsNotEmpty()
   userType: string;
 }
-class LoginType {
-  access_token: string;
+class LoginDto {
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
 
-export {
-  UserDto,
-  DefaultMessageType,
-  LoginType
-};
+export { UserDto, DefaultMessageType, LoginDto };

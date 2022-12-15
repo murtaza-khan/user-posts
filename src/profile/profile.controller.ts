@@ -8,13 +8,16 @@ import {
   UseGuards,
   Patch,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { AuthGuard,  } from '@nestjs/passport';
 import { ProfileService } from './profile.service';
 import { Language, ProfileType } from './Dto/profile.types';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('profile')
+@ApiBearerAuth('JWT-auth')
 export class ProfileController {
   constructor(private profileService: ProfileService) {}
+
   @UseGuards(AuthGuard('jwt'))
   @Get('language')
   async getLanguages(): Promise<any> {
