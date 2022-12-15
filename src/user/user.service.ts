@@ -1,29 +1,25 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { passowrdBcrypt } from '../common/bcrypt';
+import { passwordBcrypt } from '../common/bcrypt';
 import { User } from './models/user.model';
+import { constructErrorResponse } from '../common/wrappers';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectModel('User') private readonly userModel: Model<User>,
-  ) {}
+  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
   async save(user: any): Promise<User> {
-    return new Promise((resolve, reject) => {
+    try {
       const p = user;
-      
-      this.beforeCreate(p)
-        .then(async res => {
-          p.password = await passowrdBcrypt(p.password);
-          const createdUser = new this.userModel(p);
-          resolve(await createdUser.save());
-        })
-        .catch(error => {
-          resolve(error);
-        });
-    });
+      await this.beforeCreate(p);
+      p.password = await passwordBcrypt(p.password);
+      const createdUser = new this.userModel(p);
+      const userResponse = await createdUser.save();
+      return userResponse;
+    } catch (error) {
+      return constructErrorResponse(error);
+    }
   }
 
   async findAll(id?: any): Promise<any[]> {
@@ -34,8 +30,8 @@ export class UserService {
   }
   async findByCriteria(criteria: {}): Promise<any> {
     const user = await this.userModel.findOne(criteria);
-    console.log("LLLLLLLLL",user);
-    
+    console.log('LLLLLLLLL', user);
+
     return user;
   }
 
@@ -48,7 +44,7 @@ export class UserService {
   async update(user: any): Promise<{ message: string }> {
     return new Promise(async (resolve, rejects) => {
       if (user.password) {
-        user.password = await passowrdBcrypt(user.password);
+        user.password = await passwordBcrypt(user.password);
       }
       this.userModel.updateOne({ _id: user.id }, user, (err, result) => {
         if (err) {
@@ -66,17 +62,22 @@ export class UserService {
   }
 
   async beforeCreate(userData: any) {
-    return new Promise(async (resolve, reject) => {
+    try {
       if (userData.email) {
         const existingUser = await this.userModel.findOne({
           email: userData.email,
         });
         if (existingUser) {
-          reject({ errorMessage: 'Email already exists!' });
+          return constructErrorResponse({
+            message: 'Email already exists!',
+            status: 404,
+          });
         } else {
-          resolve(true);
+          return true;
         }
       }
-    });
+    } catch (error) {
+      return constructErrorResponse(error);
+    }
   }
 }

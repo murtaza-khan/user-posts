@@ -1,7 +1,7 @@
-import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { LoginDto } from '../user/Dto/user.types';
+import { constructSuccessResponse } from '../common/wrappers';
 
 @Controller('')
 export class AuthController {
@@ -9,6 +9,6 @@ export class AuthController {
   @Post('login')
   async login(@Body() data: LoginDto) {
     const response = await this.authService.login(data);
-    return response;
+    return constructSuccessResponse(response);
   }
 }
