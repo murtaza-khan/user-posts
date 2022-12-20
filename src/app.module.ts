@@ -5,10 +5,12 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { ProfileModule } from './profile/profile.module';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/lawyer-up-db'),
+    MongooseModule.forRoot(`${process.env.DATA_BASE}`),
     UserModule,
     AuthModule,
     ProfileModule
