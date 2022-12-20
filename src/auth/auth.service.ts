@@ -19,9 +19,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) { }
   async validateUser(email: string, pass: string): Promise<any> {
-    console.log(email);
     return new Promise(async (resolve, reject) => {
       const person = await this.userService.findByCriteria({ email });
+      if (!person) {
+        return reject({ message: 'Email not found!', status: 404 });
+      }
       bcrypt.compare(pass, person.password, (err, res) => {
         if (res) {
           return resolve(person);
@@ -32,13 +34,15 @@ export class AuthService {
     });
   }
   async login(person: any) {
-    const payload = { email: person.email, sub: person._id };
-    const access_token = this.jwtService.sign(payload);
-    const user: any = await this.userService.findByCriteria({
-      email: person.email,
-    });
-    delete user.password;
-    return { accessToken: access_token, user };
+    try {
+      const user: any = await this.validateUser(person.email, person.password);
+      const payload = { email: user.email, sub: user._id };
+      const access_token = this.jwtService.sign(payload);
+      delete user.password;
+      return { accessToken: access_token, user };
+    } catch (error) {
+      return constructErrorResponse(error);
+    }
   }
 
   async generateToken(data: GenerateTokenDto) {
