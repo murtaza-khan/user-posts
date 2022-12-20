@@ -8,7 +8,7 @@ import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/lawyer-up-db'),
+    MongooseModule.forRoot('mongodb+srv://lawfirm-user:k8n8NB6VWHw@cluster0.b8zjnqi.mongodb.net/lawyer-up-db'),
     UserModule,
     AuthModule,
     ProfileModule
