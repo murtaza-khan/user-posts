@@ -1,4 +1,5 @@
-import { IsEmail, IsString, IsNotEmpty, IsEnum } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsString, IsNotEmpty, IsEnum, IsNumber } from 'class-validator';
 import { UserType } from '../../common/enums';
 
 class DefaultMessageType {
@@ -7,37 +8,85 @@ class DefaultMessageType {
 }
 
 class UserDto {
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   firstName: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   lastName: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsEmail()
   email: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   password: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   phone: string;
 
+
+  @ApiProperty({ enum:UserType })
   @IsEnum(UserType)
   @IsNotEmpty()
   userType: string;
 }
 class LoginDto {
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   email: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   password: string;
 }
 
-export { UserDto, DefaultMessageType, LoginDto };
+class GenerateTokenDto {
+  @ApiProperty({
+    type: String,
+  })
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+}
+
+class VerificationTokenDto {
+  @ApiProperty({
+    type: String,
+  })
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @ApiProperty({
+    type: Number,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  verification_token: number;
+}
+
+export { UserDto, DefaultMessageType, LoginDto, GenerateTokenDto, VerificationTokenDto };

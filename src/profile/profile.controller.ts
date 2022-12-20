@@ -6,6 +6,7 @@ import {
   Param,
   Get,
   UseGuards,
+  Request,
   Patch,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -20,27 +21,28 @@ export class ProfileController {
   constructor(private profileService: ProfileService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('language')
+  @Get('me')
+  async me(@Request() req) {
+    const data = await this.profileService.findUserAndPopulateProfile(req.user);
+    return constructSuccessResponse(data);
+  }
+
+  @Get('languages')
   async getLanguages(): Promise<any> {
-    return constructSuccessResponse({
-      data: await this.profileService.findLanguages(),
-    });
+    return constructSuccessResponse(await this.profileService.findLanguages());
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('language')
   async createLanguage(@Body() data: Language): Promise<any> {
-    return constructSuccessResponse({
-      data: await this.profileService.createLanguage(data),
-    });
+    return constructSuccessResponse(
+      await this.profileService.createLanguage(data),
+    );
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get('area-categories')
   async getCategories(): Promise<any> {
-    return constructSuccessResponse({
-      data: await this.profileService.findAreas(),
-    });
+    return constructSuccessResponse(await this.profileService.findAreas());
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -52,7 +54,7 @@ export class ProfileController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Patch('update')
+  @Patch('')
   async update(@Body() data: ProfileType): Promise<any> {
     return constructSuccessResponse({
       data: await this.profileService.updateProfile(data),

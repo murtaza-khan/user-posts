@@ -4,6 +4,8 @@ import { Model } from 'mongoose';
 import { Language } from './models/language.model';
 import { Area } from './models/area.model';
 import { Profile } from './models/profile.model';
+import { UserService } from '../user/user.service';
+import { constructErrorResponse } from '../common/wrappers';
 
 @Injectable()
 export class ProfileService {
@@ -11,6 +13,7 @@ export class ProfileService {
     @InjectModel('Language') private readonly languageModel: Model<Language>,
     @InjectModel('Area') private readonly areaModel: Model<Area>,
     @InjectModel('Profile') private readonly profileModel: Model<Profile>,
+    private readonly userService: UserService,
   ) {}
 
   async createLanguage(data: any): Promise<Language> {
@@ -51,6 +54,19 @@ export class ProfileService {
       return createdArea;
     } catch (error) {
       return error;
+    }
+  }
+
+  async findUserAndPopulateProfile(data: any): Promise<any> {
+    let user: any = await this.userService.findUserAndPopulateProfile(
+      data.email,
+    );
+    if (user) {
+      const profile = await this.profileModel.findOne({ userId: user._id });
+      user = { user, profile };
+      return user;
+    } else {
+      constructErrorResponse({ message: 'User not found', status: 404 });
     }
   }
 }

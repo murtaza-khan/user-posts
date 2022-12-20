@@ -21,8 +21,9 @@ export const ProfileSchema = new mongoose.Schema({
   oralProficiency: String,
   writtenProficiency: String,
   experience: Array,
-  business:Array,
+  business: Array,
   address: Array,
+  subscriptionPackages: String,
   /**
    * userId
    */

@@ -7,7 +7,7 @@ import { constructErrorResponse } from '../common/wrappers';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
+  constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
 
   async save(user: any): Promise<User> {
     try {
@@ -16,6 +16,7 @@ export class UserService {
       p.password = await passwordBcrypt(p.password);
       const createdUser = new this.userModel(p);
       const userResponse = await createdUser.save();
+      await this.generateToken(user.email);
       return userResponse;
     } catch (error) {
       return constructErrorResponse(error);
@@ -30,8 +31,6 @@ export class UserService {
   }
   async findByCriteria(criteria: {}): Promise<any> {
     const user = await this.userModel.findOne(criteria);
-    console.log('LLLLLLLLL', user);
-
     return user;
   }
 
@@ -59,6 +58,43 @@ export class UserService {
         }
       });
     });
+  }
+
+  async findUserAndPopulateProfile(email) {
+    const me = await this.userModel.findOne({
+      email,
+    });
+    return me;
+  }
+  async generateToken(email) {
+    const verification_token = Math.floor(1000 + Math.random() * 9000);
+
+    const response = await this.userModel.updateOne(
+      {
+        email,
+      },
+      //token hardcoded 1234 for now. It will be used random token when we integrated email
+      { verification_token: 1234 },
+    );
+    return response;
+  }
+
+  async verifyToken(email, verification_token) {
+
+    const user = await this.userModel.findOne({
+      email, verification_token
+    });
+    if (user) {
+      const response = await this.userModel.updateOne(
+        {
+          email,
+        },
+        { verification_token: null },
+      );
+      return response;
+    } else {
+      return constructErrorResponse({ message: 'Invalid token!', status: 404 });
+    }
   }
 
   async beforeCreate(userData: any) {

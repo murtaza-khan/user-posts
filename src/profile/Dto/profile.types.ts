@@ -1,176 +1,290 @@
-import { IsArray, IsString, IsNotEmpty, IsEnum, IsOptional} from 'class-validator';
-import { OfficeType, OralProficiency, RepresentType } from '../../common/enums';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsArray, IsString, IsNotEmpty, IsEnum, IsOptional } from 'class-validator';
+import { OfficeType, OralProficiency, RepresentType, SubscriptionPackages } from '../../common/enums';
 class AddressType {
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   address: string;
 
+  @ApiProperty({
+    type: Number,
+  })
   @IsString()
   @IsNotEmpty()
   postalCode: number;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   city: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   state: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   country: string;
 }
 
 class BusinessType {
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   businessName: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   businessType: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   registeredDate: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   EIN: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   businessPhone: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   website: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   businessDescription: string;
 }
 
 class ExperienceType {
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   title: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   description: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   practiceAreas: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   industry: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   court: string;
 }
 
 class ProfileType {
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
-  @IsNotEmpty()
-  firmName: string;
+  @IsOptional()
+  firmName?: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
-  @IsNotEmpty()
-  firmWebsite: string;
+  @IsOptional()
+  firmWebsite?: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
-  @IsNotEmpty()
-  billingStructure: string;
+  @IsOptional()
+  billingStructure?: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   ratePerHourMin?: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   ratePerHourMax?: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
-  @IsNotEmpty()
-  onContingency: string;
+  @IsOptional()
+  onContingency?: string;
 
+  @ApiProperty({ enum: RepresentType })
   @IsEnum(RepresentType)
   @IsString()
-  @IsNotEmpty()
-  represent: string;
+  @IsOptional()
+  represent?: string;
 
+  @ApiProperty({
+    type: [String],
+  })
   @IsArray()
-  @IsNotEmpty()
-  practiceAreas: [string];
+  @IsOptional()
+  practiceAreas?: [string];
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
-  @IsNotEmpty()
-  practicingLawSince: Date;
+  @IsOptional()
+  practicingLawSince?: Date;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
-  @IsNotEmpty()
-  licenseNumber: string;
+  @IsOptional()
+  licenseNumber?: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
-  @IsNotEmpty()
-  locationPermitted: string;
+  @IsOptional()
+  locationPermitted?: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
-  @IsNotEmpty()
-  biography: string;
+  @IsOptional()
+  biography?: string;
 
+  @ApiProperty({ enum: OfficeType })
   @IsEnum(OfficeType)
   @IsString()
-  @IsNotEmpty()
-  officeType: string;
+  @IsOptional()
+  officeType?: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
-  @IsNotEmpty()
-  primaryLanguage: string;
+  @IsOptional()
+  primaryLanguage?: string;
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
-  @IsNotEmpty()
-  secondaryLanguage: string;
+  @IsOptional()
+  secondaryLanguage?: string;
 
+  @ApiProperty({ enum: OralProficiency })
   @IsEnum(OralProficiency)
   @IsString()
-  @IsNotEmpty()
-  oralProficiency: string;
+  @IsOptional()
+  oralProficiency?: string;
 
+  @ApiProperty({ enum: OralProficiency })
   @IsEnum(OralProficiency)
   @IsString()
-  @IsNotEmpty()
-  writtenProficiency: string;
+  @IsOptional()
+  writtenProficiency?: string;
 
+  @ApiProperty({
+    type: [ExperienceType],
+  })
   @IsOptional()
   @IsArray()
-  // @IsNotEmpty()
   experience?: ExperienceType[];
 
+  @ApiProperty({
+    type: [BusinessType],
+  })
   @IsOptional()
   @IsArray()
-  // @IsNotEmpty()
   business?: BusinessType[];
 
+  @ApiProperty({
+    type: [AddressType],
+  })
   @IsOptional()
   @IsArray()
-  // @IsNotEmpty()
   address?: AddressType[];
+
+
+  @ApiProperty({ enum: SubscriptionPackages })
+  @IsEnum(SubscriptionPackages)
+  @IsString()
+  @IsOptional()
+  subscriptionPackages?: string;
   /**
    * userId is relationId business with user
    */
 
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   userId: string;
 }
 
 class Language {
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsNotEmpty()
   name: string;

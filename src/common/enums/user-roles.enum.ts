@@ -20,5 +20,10 @@ export enum OralProficiency {
     'NATIVE' = 'NATIVE',
     'FLUENT' = 'FLUENT',
     'INTERMEDIATE' = 'INTERMEDIATE',
-    'BEGINNER'='BEGINNER'
+    'BEGINNER' = 'BEGINNER'
+}
+
+export enum SubscriptionPackages {
+    'StandardPackage' = 'StandardPackage',
+    'PremiumPackage' = 'PremiumPackage',
 }

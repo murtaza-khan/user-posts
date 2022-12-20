@@ -5,6 +5,6 @@ export interface User extends Document {
   phone: string;
   email: string;
   password: string;
+  verification_token: number;
   userType: string;
 }
-  
