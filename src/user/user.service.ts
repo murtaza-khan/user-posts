@@ -118,4 +118,37 @@ export class UserService {
       return constructErrorResponse(error);
     }
   }
+
+  async updateProfile(data: any): Promise<any> {
+    try {
+      const createdArea = await this.userModel.updateOne(
+        { _id: data.userId },
+        data,
+        { upsert: true },
+      );
+      if (createdArea.n > 0) {
+        return constructSuccessResponse({}, 'Profile Updated Successfully!');
+      } else {
+        return constructSuccessResponse({}, 'Profile Already Updated!');
+      }
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async findUserProfile(data: any): Promise<any> {
+    let user: any = await this.findUserAndPopulateProfile(
+      data.email,
+    );
+    if (user) {
+      const profile = await this.userModel.findOne({ _id: user._id });
+      const response = JSON.parse(JSON.stringify(user));
+      delete response.password;
+      delete response.verification_token;
+      user = { user: response, profile };
+      return user;
+    } else {
+      constructErrorResponse({ message: 'User not found', status: 404 });
+    }
+  }
 }

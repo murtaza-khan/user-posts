@@ -50,7 +50,7 @@ export class AuthService {
   async generateToken(data: GenerateTokenDto) {
     const response = await this.userService.generateToken(
       data.email);
-    if (response && response.nModified > 0) {
+    if (response && response.n > 0) {
       return constructSuccessResponse({}, 'Token Generated Successfully!');
     } else {
       return constructErrorResponse({ message: 'Token not generated!', status: 400 });

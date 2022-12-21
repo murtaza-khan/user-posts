@@ -10,8 +10,8 @@ import {
   Patch,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ProfileService } from './profile.service';
-import { Language, ProfileType } from './Dto/profile.types';
+import { ProfileService } from './general.service';
+import { Language } from './Dto/general.types';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { constructSuccessResponse } from '../common/wrappers';
 
