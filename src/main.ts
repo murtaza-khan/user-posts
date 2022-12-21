@@ -8,7 +8,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-    .setTitle('lawfirm')
+    .setTitle('Lawfirm')
     .setDescription('The lawfirm API description')
     .setVersion('1.0')
     .addBearerAuth(
@@ -22,10 +22,11 @@ async function bootstrap() {
       },
       'JWT-auth',
     )
-    .addTag('lawfirm')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: { defaultModelsExpandDepth: -1 },
+  });
 
   await app.listen(process.env.PORT || 3000);
 }

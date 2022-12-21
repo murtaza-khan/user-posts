@@ -19,10 +19,10 @@ export interface Profile extends Document {
   secondaryLanguage: string;
   oralProficiency: OralProficiency;
   writtenProficiency: OralProficiency;
-  experience: ExperienceType;
-  business: BusinessType;
-  address: AddressType;
-  subscriptionPackages: string;
+  experiences: [ExperienceType];
+  businesses: [BusinessType];
+  addresses: [AddressType];
+  subscription: string;
   /**
    * userId is relationId business with user
    */

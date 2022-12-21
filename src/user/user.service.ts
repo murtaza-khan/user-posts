@@ -3,21 +3,23 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { passwordBcrypt } from '../common/bcrypt';
 import { User } from './models/user.model';
-import { constructErrorResponse } from '../common/wrappers';
+import { constructErrorResponse, constructSuccessResponse } from '../common/wrappers';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
 
-  async save(user: any): Promise<User> {
+  async save(user: any): Promise<any> {
     try {
       const p = user;
       await this.beforeCreate(p);
       p.password = await passwordBcrypt(p.password);
       const createdUser = new this.userModel(p);
-      const userResponse = await createdUser.save();
+      const userResponse: any = await createdUser.save();
+      const response = JSON.parse(JSON.stringify(userResponse));
+      delete response.password;
       await this.generateToken(user.email);
-      return userResponse;
+      return constructSuccessResponse(response, 'User Registered Successfully!');
     } catch (error) {
       return constructErrorResponse(error);
     }

@@ -15,23 +15,20 @@ import { Language, ProfileType } from './Dto/profile.types';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { constructSuccessResponse } from '../common/wrappers';
 
-@Controller('profile')
+@Controller('')
 @ApiBearerAuth('JWT-auth')
-@ApiTags('Profile')
-export class ProfileController {
+@ApiTags('Categories')
+export class CategoriesController {
   constructor(private profileService: ProfileService) { }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Get('me')
-  async me(@Request() req) {
-    const data = await this.profileService.findUserAndPopulateProfile(req.user);
-    return constructSuccessResponse(data);
+  @Get('area-categories')
+  async getCategories(): Promise<any> {
+    return constructSuccessResponse(await this.profileService.findAreas());
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Patch('')
-  async update(@Request() req, @Body() data: ProfileType): Promise<any> {
-    data.userId = req.user.person;
-    return this.profileService.updateProfile(data);
+  @Post('area-categories')
+  async createCategories(@Body() data: Language): Promise<any> {
+    return this.profileService.createArea(data);
   }
 }

@@ -5,16 +5,17 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ProfileController } from './profile.controller';
 import { AreaSchema, LanguageSchema, ProfileSchema } from './profile.schema';
 import { ProfileService } from './profile.service';
-import { UserService } from '../user/user.service';
 import { UserModule } from '../user/user.module';
+import { CategoriesController } from './categories.controller';
+import { LanguagesController } from './languages.controller';
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'Profile', schema: ProfileSchema },{ name: 'Language', schema: LanguageSchema },{ name: 'Area', schema: AreaSchema }]),
+    MongooseModule.forFeature([{ name: 'Profile', schema: ProfileSchema }, { name: 'Language', schema: LanguageSchema }, { name: 'Area', schema: AreaSchema }]),
     forwardRef(() => AuthModule),
     forwardRef(() => UserModule),
   ],
   providers: [ProfileService],
   exports: [ProfileService],
-  controllers: [ProfileController],
+  controllers: [ProfileController, CategoriesController, LanguagesController],
 })
-export class ProfileModule {}
+export class ProfileModule { }

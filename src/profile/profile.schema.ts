@@ -20,10 +20,10 @@ export const ProfileSchema = new mongoose.Schema({
   secondaryLanguage: String,
   oralProficiency: String,
   writtenProficiency: String,
-  experience: Array,
-  business: Array,
-  address: Array,
-  subscriptionPackages: String,
+  experiences: Array,
+  businesses: Array,
+  addresses: Array,
+  subscription: String,
   /**
    * userId
    */

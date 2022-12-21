@@ -9,7 +9,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { GenerateTokenDto, VerificationTokenDto } from '../user/Dto/user.types';
-import { constructErrorResponse } from '../common/wrappers';
+import { constructErrorResponse, constructSuccessResponse } from '../common/wrappers';
 
 @Injectable()
 export class AuthService {
@@ -35,11 +35,13 @@ export class AuthService {
   }
   async login(person: any) {
     try {
-      const user: any = await this.validateUser(person.email, person.password);
+      let user: any = await this.validateUser(person.email, person.password);
       const payload = { email: user.email, sub: user._id };
-      const access_token = this.jwtService.sign(payload);
-      delete user.password;
-      return { accessToken: access_token, user };
+      const accessToken = this.jwtService.sign(payload);
+      const response = JSON.parse(JSON.stringify(user));
+      delete response.password;
+      delete response.verification_token;
+      return constructSuccessResponse({ accessToken, user: response }, 'You are logged in Successfully!');
     } catch (error) {
       return constructErrorResponse(error);
     }

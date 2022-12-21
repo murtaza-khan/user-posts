@@ -24,6 +24,6 @@ export enum OralProficiency {
 }
 
 export enum SubscriptionPackages {
-    'StandardPackage' = 'StandardPackage',
-    'PremiumPackage' = 'PremiumPackage',
+    'STANDARD' = 'STANDARD',
+    'PREMIUM' = 'PREMIUM',
 }
