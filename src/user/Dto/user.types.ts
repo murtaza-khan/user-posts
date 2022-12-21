@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString, IsNotEmpty, IsEnum, IsNumber } from 'class-validator';
+import { IsEmail, IsString, IsNotEmpty, IsBoolean, IsEnum, IsNumber, IsOptional } from 'class-validator';
 import { UserType } from '../../common/enums';
 
 class DefaultMessageType {
@@ -43,7 +43,19 @@ class UserDto {
   phone: string;
 
 
-  @ApiProperty({ enum:UserType })
+  @ApiProperty({
+    type: Boolean,
+  })
+  @IsBoolean()
+  @IsOptional()
+  isGeneralCounselor?: boolean;
+
+
+  @IsString()
+  @IsOptional()
+  businessName: string;
+
+  @ApiProperty({ enum: UserType })
   @IsEnum(UserType)
   @IsNotEmpty()
   userType: string;

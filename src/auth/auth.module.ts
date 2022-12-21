@@ -8,10 +8,12 @@ import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '../user/user.module';
 import { jwtConstants } from './constants';
 import { AuthController } from './auth.controller';
+import { ProfileModule } from '../profile/profile.module';
 
 @Module({
   imports: [
     forwardRef(() => UserModule),
+    forwardRef(() => ProfileModule),
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,

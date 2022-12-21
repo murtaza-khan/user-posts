@@ -51,7 +51,7 @@ export class AuthService {
     const response = await this.userService.generateToken(
       data.email);
     if (response && response.nModified > 0) {
-      return { message: 'Token Generated Successfully!', status: 200 };
+      return constructSuccessResponse({}, 'Token Generated Successfully!');
     } else {
       return constructErrorResponse({ message: 'Token not generated!', status: 400 });
     }
@@ -63,7 +63,7 @@ export class AuthService {
       data.verification_token,
     );
     if (response && response.nModified > 0) {
-      return { message: 'Token Verified Successfully!', status: 200 };
+      return constructSuccessResponse({}, 'Token Verified Successfully!');
     } else {
       return constructErrorResponse({ message: 'Token not Verified!', status: 400 });
     }
