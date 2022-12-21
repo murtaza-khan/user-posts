@@ -21,11 +21,12 @@ import { ProfileType } from './Dto/user.types';
 export class UserController {
   constructor(private userService: UserService) {}
 
-   @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Get('me')
   async me(@Request() req) {
-    const data = await this.userService.findUserAndPopulateProfile(req.user);
-    return constructSuccessResponse(data);
+    const user = JSON.parse(JSON.stringify(await this.userService.findUserAndPopulateProfile(req.user.email)));
+    delete user.password;
+    return constructSuccessResponse(user);
   }
 
   @UseGuards(AuthGuard('jwt'))
