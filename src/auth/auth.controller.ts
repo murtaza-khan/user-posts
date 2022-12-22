@@ -11,15 +11,13 @@ import { ProfileService } from '../general/general.service';
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private userService: UserService,
-    private profileService: ProfileService,
+    private userService: UserService
   ) { }
   @Post('register')
   async create(@Body() userData: UserDto): Promise<any> {
 
     const user = await this.userService.save(userData);
-    const accessToken = this.authService.getAccessToken(user.email, user._id);
-    return { accessToken, user };
+    return user;
   }
 
   @Post('email-verification')

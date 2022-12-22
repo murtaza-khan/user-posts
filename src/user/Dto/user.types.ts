@@ -49,6 +49,13 @@ class BusinessType {
   name: string;
 
   // @ApiProperty({
+  //   type: Boolean,
+  // })
+  @IsBoolean()
+  @IsOptional()
+  isGeneralCounselor?: boolean;
+
+  // @ApiProperty({
   //   type: String,
   // })
   @IsString()
@@ -89,6 +96,12 @@ class BusinessType {
   @IsString()
   @IsOptional()
   businessDescription?: string;
+
+
+  @IsArray()
+  @IsOptional()
+  address?: AddressType[];
+
 }
 
 class ExperienceType {
@@ -329,21 +342,11 @@ class UserDto {
   @IsNotEmpty()
   phone: string;
 
-
   @ApiProperty({
-    type: Boolean,
-  })
-  @IsBoolean()
-  @IsOptional()
-  isGeneralCounselor?: boolean;
-
-
-  @ApiProperty({
-    type: [BusinessType],
+    type: BusinessType,
   })
   @IsOptional()
-  businesses?: BusinessType[];
-
+  business?: BusinessType;
 
   @ApiProperty({ enum: UserType })
   @IsEnum(UserType)

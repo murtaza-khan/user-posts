@@ -19,14 +19,12 @@ import { ProfileType } from './Dto/user.types';
 @ApiBearerAuth('JWT-auth')
 @ApiTags('User')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('me')
   async me(@Request() req) {
-    const user = JSON.parse(JSON.stringify(await this.userService.findUserAndPopulateProfile(req.user.email)));
-    delete user.password;
-    return constructSuccessResponse(user, "User fetched successfully");
+    return this.userService.findUserAndPopulateProfile(req.user.email);
   }
 
   @UseGuards(AuthGuard('jwt'))

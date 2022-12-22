@@ -4,33 +4,23 @@ import { Model } from 'mongoose';
 import { passwordBcrypt } from '../common/bcrypt';
 import { User } from './models/user.model';
 import { constructErrorResponse, constructSuccessResponse } from '../common/wrappers';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel('User') private readonly userModel: Model<User>,
-    private readonly jwtService: JwtService,
+    @InjectModel('User') private readonly userModel: Model<User>
   ) { }
 
   async save(userData: any): Promise<any> {
     try {
       await this.beforeCreate(userData);
-
-      console.log('userData....................', userData);
-
       userData.password = await passwordBcrypt(userData.password);
-      let user = await (new this.userModel(userData)).save();
+      let user = await (new this.userModel({ ...userData, isEmailVerified: false })).save();
 
       user = JSON.parse(JSON.stringify(user));
       delete user.password;
-
       await this.generateToken(user.email);
-
-      const payload = { email: user.email, sub: user._id };
-      const accessToken = this.jwtService.sign(payload);
-
-      return constructSuccessResponse({ user, accessToken }, 'User registered successfully!');
+      return constructSuccessResponse(user, 'User registered successfully!');
     } catch (error) {
       return constructErrorResponse(error);
     }
@@ -77,7 +67,10 @@ export class UserService {
     const me = await this.userModel.findOne({
       email,
     });
-    return me;
+    const user = JSON.parse(JSON.stringify(me));
+    delete user.password;
+    delete user.verificationToken;
+    return constructSuccessResponse(user, "User fetched successfully");
   }
   async generateToken(email) {
     const verificationToken = Math.floor(100000 + Math.random() * 900000);
@@ -95,9 +88,12 @@ export class UserService {
   async verifyToken(email, verificationToken) {
 
     const user = await this.userModel.findOne({
-      email, verificationToken
+      email
     });
-    if (user) {
+    if (user && user.emailVerificationAttempts > 4) {
+      return constructErrorResponse({ message: 'Email is Blocked!', status: 404 });
+    }
+    if (user && user.verificationToken === verificationToken) {
       const response = await this.userModel.updateOne(
         {
           email,
@@ -107,8 +103,16 @@ export class UserService {
           verificationToken: null,
         },
       );
-      return response;
+      return { response, user };
     } else {
+      await this.userModel.updateOne(
+        {
+          email,
+        },
+        {
+          emailVerificationAttempts: user.emailVerificationAttempts ? user.emailVerificationAttempts + 1 : 1,
+        },
+      );
       return constructErrorResponse({ message: 'Invalid token!', status: 404 });
     }
   }

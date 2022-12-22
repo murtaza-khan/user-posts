@@ -8,7 +8,9 @@ export const UserSchema = new mongoose.Schema({
   password: String,
   verificationToken: String,
   isGeneralCounselor: Boolean,
-
+  userType: String,
+  isEmailVerified: Boolean,
+  emailVerificationAttempts: Number,
   //profile
   firmName: String,
   firmWebsite: String,
@@ -28,7 +30,7 @@ export const UserSchema = new mongoose.Schema({
   oralProficiency: String,
   writtenProficiency: String,
   experiences: Array,
-  businesses: Array,
+  business: Array,
   addresses: Array,
   subscription: String,
 });

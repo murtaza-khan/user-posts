@@ -19,23 +19,20 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) { }
   async validateUser(email: string, pass: string): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      const person = await this.userService.findByCriteria({ email });
-      if (!person) {
-        return reject({ message: 'Email not found!', status: 404 });
-      }
-      bcrypt.compare(pass, person.password, (err, res) => {
-        if (res) {
-          return resolve(person);
-        } else {
-          resolve(new UnauthorizedException('Password Incorrect!'));
-        }
-      });
-    });
+    const person = await this.userService.findByCriteria({ email });
+    if (!person) {
+      return constructErrorResponse({ message: 'Email not found!', status: 404 });
+    }
+    const res = await bcrypt.compare(pass, person.password)
+    if (res === true) {
+      return person;
+    } else {
+      return constructErrorResponse({ message: 'Password Incorrect!', status: 401 });
+    }
   }
 
   async getAccessToken(email, sub) {
-    return this.jwtService.sign({email, sub});
+    return this.jwtService.sign({ email, sub });
   }
 
   async login(person: any) {
@@ -67,8 +64,9 @@ export class AuthService {
       data.email,
       data.verificationToken,
     );
-    if (response && response.nModified > 0) {
-      return constructSuccessResponse({}, 'Token verified successfully!');
+    if (response && response.response.nModified > 0) {
+      const accessToken = await this.getAccessToken(response.user.email, response.user._id);
+      return constructSuccessResponse({ accessToken }, 'Token verified successfully!');
     } else {
       return constructErrorResponse({ message: 'Token not Verified!', status: 400 });
     }

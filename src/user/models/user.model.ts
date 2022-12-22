@@ -11,7 +11,10 @@ export interface User extends Document {
   verificationToken: number;
   isGeneralCounselor: boolean;
   userType: string;
+
   isEmailVerified: boolean;
+  emailVerificationAttempts: number,
+
   firmName: string;
   firmWebsite: string;
   billingStructure: string;
@@ -30,7 +33,7 @@ export interface User extends Document {
   oralProficiency: OralProficiency;
   writtenProficiency: OralProficiency;
   experiences: [ExperienceType];
-  businesses: [BusinessType];
+  business: [BusinessType];
   addresses: [AddressType];
   subscription: string;
 }
