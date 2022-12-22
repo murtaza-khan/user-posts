@@ -2,16 +2,12 @@ import {
   Controller,
   Post,
   Body,
-  Put,
-  Param,
-  Get,
   UseGuards,
-  Request,
-  Patch,
+
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ProfileService } from './general.service';
-import { Language } from './Dto/general.types';
+import { Category } from './Dto/general.types';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { constructSuccessResponse } from '../common/wrappers';
 
@@ -28,7 +24,7 @@ export class CategoriesController {
 
   @UseGuards(AuthGuard('jwt'))
   // @Post('categories')
-  async createCategories(@Body() data: Language): Promise<any> {
+  async createCategories(@Body() data: Category): Promise<any> {
     return this.profileService.createArea(data);
   }
 }

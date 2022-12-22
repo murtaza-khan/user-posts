@@ -91,7 +91,7 @@ export class UserService {
       email
     });
     if (user && user.emailVerificationAttempts > 4) {
-      return constructErrorResponse({ message: 'Email is Blocked!', status: 404 });
+      return constructErrorResponse({ message: 'Account is Blocked!', status: 404 });
     }
     if (user && user.verificationToken === verificationToken) {
       const response = await this.userModel.updateOne(
@@ -139,16 +139,15 @@ export class UserService {
 
   async updateProfile(data: any): Promise<any> {
     try {
-      const createdArea = await this.userModel.updateOne(
-        { _id: data.userId },
+      const user = await this.userModel.findByIdAndUpdate(
+        data.userId,
         data,
-        { upsert: true },
+        { new: true }
       );
-      if (createdArea.n > 0) {
-        return constructSuccessResponse({}, 'Profile updated successfully!');
-      } else {
-        return constructSuccessResponse({}, 'Profile already updated!');
-      }
+      const response = user.toJSON();
+      delete response.password;
+      delete response.verificationToken;
+      return constructSuccessResponse(response, 'Profile updated successfully!');
     } catch (error) {
       return error;
     }

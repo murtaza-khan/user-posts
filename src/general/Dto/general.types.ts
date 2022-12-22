@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty} from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 class Language {
   @ApiProperty({
@@ -8,6 +8,24 @@ class Language {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+
 }
 
-export { Language };
+class Category {
+  @ApiProperty({
+    type: String,
+  })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @ApiProperty({
+    type: [String],
+  })
+  @IsString()
+  @IsNotEmpty()
+  states: string[];
+}
+
+export { Language, Category };

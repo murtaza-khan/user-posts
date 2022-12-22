@@ -48,51 +48,51 @@ class BusinessType {
   @IsNotEmpty()
   name: string;
 
-  // @ApiProperty({
-  //   type: Boolean,
-  // })
+  @ApiProperty({
+    type: Boolean,
+  })
   @IsBoolean()
   @IsOptional()
   isGeneralCounselor?: boolean;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   businessType?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   registeredDate?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   EIN?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   businessPhone?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   website?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   businessDescription?: string;
@@ -100,7 +100,7 @@ class BusinessType {
 
   @IsArray()
   @IsOptional()
-  address?: AddressType[];
+  addresses?: AddressType[];
 
 }
 
