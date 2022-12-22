@@ -26,14 +26,12 @@ export class UserController {
   async me(@Request() req) {
     const user = JSON.parse(JSON.stringify(await this.userService.findUserAndPopulateProfile(req.user.email)));
     delete user.password;
-    return constructSuccessResponse(user);
+    return constructSuccessResponse(user, "User fetched successfully");
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Patch('')
   async update(@Request() req, @Body() data: ProfileType): Promise<any> {
-    console.log('>>>>>>>>>>>>>',req.user.person);
-    
     data.userId = req.user.person;
     return this.userService.updateProfile(data);
   }

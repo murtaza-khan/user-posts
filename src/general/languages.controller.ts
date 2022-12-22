@@ -20,13 +20,13 @@ import { constructSuccessResponse } from '../common/wrappers';
 @ApiTags('Languages')
 export class LanguagesController {
   constructor(private profileService: ProfileService) { }
-  @Get('languages')
+  // @Get('languages')
   async getLanguages(): Promise<any> {
     return constructSuccessResponse(await this.profileService.findLanguages());
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Post('language')
+  // @Post('language')
   async createLanguage(@Body() data: Language): Promise<any> {
     return constructSuccessResponse(
       await this.profileService.createLanguage(data),

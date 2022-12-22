@@ -21,13 +21,13 @@ import { constructSuccessResponse } from '../common/wrappers';
 export class CategoriesController {
   constructor(private profileService: ProfileService) { }
 
-  @Get('area-categories')
+  // @Get('categories')
   async getCategories(): Promise<any> {
     return constructSuccessResponse(await this.profileService.findAreas());
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Post('area-categories')
+  // @Post('categories')
   async createCategories(@Body() data: Language): Promise<any> {
     return this.profileService.createArea(data);
   }

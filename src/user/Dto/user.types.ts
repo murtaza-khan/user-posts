@@ -46,46 +46,46 @@ class BusinessType {
   })
   @IsString()
   @IsNotEmpty()
-  businessName: string;
+  name: string;
 
-  @ApiProperty({
-    type: String,
-  })
+  // @ApiProperty({
+  //   type: String,
+  // })
   @IsString()
   @IsOptional()
   businessType?: string;
 
-  @ApiProperty({
-    type: String,
-  })
+  // @ApiProperty({
+  //   type: String,
+  // })
   @IsString()
   @IsOptional()
   registeredDate?: string;
 
-  @ApiProperty({
-    type: String,
-  })
+  // @ApiProperty({
+  //   type: String,
+  // })
   @IsString()
   @IsOptional()
   EIN?: string;
 
-  @ApiProperty({
-    type: String,
-  })
+  // @ApiProperty({
+  //   type: String,
+  // })
   @IsString()
   @IsOptional()
   businessPhone?: string;
 
-  @ApiProperty({
-    type: String,
-  })
+  // @ApiProperty({
+  //   type: String,
+  // })
   @IsString()
   @IsOptional()
   website?: string;
 
-  @ApiProperty({
-    type: String,
-  })
+  // @ApiProperty({
+  //   type: String,
+  // })
   @IsString()
   @IsOptional()
   businessDescription?: string;
@@ -388,7 +388,7 @@ class VerificationTokenDto {
   })
   @IsNumber()
   @IsNotEmpty()
-  verification_token: number;
+  verificationToken: number;
 }
 
 export { UserDto, DefaultMessageType, LoginDto, GenerateTokenDto, VerificationTokenDto, ProfileType, AddressType, BusinessType, ExperienceType, Language };

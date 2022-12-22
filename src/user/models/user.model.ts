@@ -8,7 +8,7 @@ export interface User extends Document {
   phone: string;
   email: string;
   password: string;
-  verification_token: number;
+  verificationToken: number;
   isGeneralCounselor: boolean;
   userType: string;
 

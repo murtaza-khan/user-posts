@@ -4,22 +4,31 @@ import { Model } from 'mongoose';
 import { passwordBcrypt } from '../common/bcrypt';
 import { User } from './models/user.model';
 import { constructErrorResponse, constructSuccessResponse } from '../common/wrappers';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
+  constructor(
+    @InjectModel('User') private readonly userModel: Model<User>,
+    private readonly jwtService: JwtService,
+  ) { }
 
-  async save(user: any): Promise<any> {
+  async save(userData: any): Promise<any> {
     try {
-      const p = user;
-      await this.beforeCreate(p);
-      p.password = await passwordBcrypt(p.password);
-      const createdUser = new this.userModel(p);
-      const userResponse: any = await createdUser.save();
-      const response = JSON.parse(JSON.stringify(userResponse));
-      delete response.password;
+      await this.beforeCreate(userData);
+
+      userData.password = await passwordBcrypt(userData.password);
+      let user = await (new this.userModel(userData)).save();
+
+      user = JSON.parse(JSON.stringify(user));
+      delete user.password;
+
       await this.generateToken(user.email);
-      return constructSuccessResponse(response, 'User Registered Successfully!');
+
+      const payload = { email: user.email, sub: user._id };
+      const accessToken = this.jwtService.sign(payload);
+
+      return constructSuccessResponse({ user, accessToken }, 'User registered successfully!');
     } catch (error) {
       return constructErrorResponse(error);
     }
@@ -69,29 +78,29 @@ export class UserService {
     return me;
   }
   async generateToken(email) {
-    const verification_token = Math.floor(1000 + Math.random() * 9000);
+    const verificationToken = Math.floor(1000 + Math.random() * 9000);
 
     const response = await this.userModel.updateOne(
       {
         email,
       },
       //token hardcoded 1234 for now. It will be used random token when we integrated email
-      { verification_token: 1234 },
+      { verificationToken: 1234 },
     );
     return response;
   }
 
-  async verifyToken(email, verification_token) {
+  async verifyToken(email, verificationToken) {
 
     const user = await this.userModel.findOne({
-      email, verification_token
+      email, verificationToken
     });
     if (user) {
       const response = await this.userModel.updateOne(
         {
           email,
         },
-        { verification_token: null },
+        { verificationToken: null },
       );
       return response;
     } else {
@@ -127,9 +136,9 @@ export class UserService {
         { upsert: true },
       );
       if (createdArea.n > 0) {
-        return constructSuccessResponse({}, 'Profile Updated Successfully!');
+        return constructSuccessResponse({}, 'Profile updated successfully!');
       } else {
-        return constructSuccessResponse({}, 'Profile Already Updated!');
+        return constructSuccessResponse({}, 'Profile already updated!');
       }
     } catch (error) {
       return error;
@@ -144,7 +153,7 @@ export class UserService {
       const profile = await this.userModel.findOne({ _id: user._id });
       const response = JSON.parse(JSON.stringify(user));
       delete response.password;
-      delete response.verification_token;
+      delete response.verificationToken;
       user = { user: response, profile };
       return user;
     } else {

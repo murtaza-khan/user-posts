@@ -14,10 +14,6 @@ export class AuthController {
     private userService: UserService,
     private profileService: ProfileService,
   ) { }
-  @Post('login')
-  async login(@Body() data: LoginDto) {
-    return this.authService.login(data);
-  }
   @Post('register')
   async create(@Body() userData: UserDto): Promise<any> {
 
@@ -33,5 +29,10 @@ export class AuthController {
   @Post('verify-email-code')
   async verifyToken(@Body() data: VerificationTokenDto): Promise<any> {
     return this.authService.verificationToken(data);
+  }
+
+  @Post('login')
+  async login(@Body() data: LoginDto) {
+    return this.authService.login(data);
   }
 }

@@ -40,8 +40,8 @@ export class AuthService {
       const accessToken = this.jwtService.sign(payload);
       const response = JSON.parse(JSON.stringify(user));
       delete response.password;
-      delete response.verification_token;
-      return constructSuccessResponse({ accessToken, user: response }, 'You are logged in Successfully!');
+      delete response.verificationToken;
+      return constructSuccessResponse({ accessToken, user: response }, 'You are logged in successfully!');
     } catch (error) {
       return constructErrorResponse(error);
     }
@@ -51,7 +51,7 @@ export class AuthService {
     const response = await this.userService.generateToken(
       data.email);
     if (response && response.n > 0) {
-      return constructSuccessResponse({}, 'Token Generated Successfully!');
+      return constructSuccessResponse({}, 'Token generated successfully!');
     } else {
       return constructErrorResponse({ message: 'Token not generated!', status: 400 });
     }
@@ -60,10 +60,10 @@ export class AuthService {
   async verificationToken(data: VerificationTokenDto) {
     const response = await this.userService.verifyToken(
       data.email,
-      data.verification_token,
+      data.verificationToken,
     );
     if (response && response.nModified > 0) {
-      return constructSuccessResponse({}, 'Token Verified Successfully!');
+      return constructSuccessResponse({}, 'Token verified successfully!');
     } else {
       return constructErrorResponse({ message: 'Token not Verified!', status: 400 });
     }
