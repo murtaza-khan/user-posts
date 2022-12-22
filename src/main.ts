@@ -9,7 +9,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Lawfirm')
-    .setDescription('The lawfirm API description')
+    .setDescription('Lawfirm APIs Documentation')
     .setVersion('1.0')
     .addBearerAuth(
       {
