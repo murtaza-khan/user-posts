@@ -17,6 +17,8 @@ export class UserService {
     try {
       await this.beforeCreate(userData);
 
+      console.log('userData....................', userData);
+
       userData.password = await passwordBcrypt(userData.password);
       let user = await (new this.userModel(userData)).save();
 
@@ -78,14 +80,14 @@ export class UserService {
     return me;
   }
   async generateToken(email) {
-    const verificationToken = Math.floor(1000 + Math.random() * 9000);
+    const verificationToken = Math.floor(100000 + Math.random() * 900000);
 
     const response = await this.userModel.updateOne(
       {
         email,
       },
-      //token hardcoded 1234 for now. It will be used random token when we integrated email
-      { verificationToken: 1234 },
+      //token hardcoded 123456 for now. It will be used random token when we integrated email
+      { verificationToken: 123456 },
     );
     return response;
   }
