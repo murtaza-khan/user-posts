@@ -102,7 +102,10 @@ export class UserService {
         {
           email,
         },
-        { verificationToken: null },
+        {
+          isEmailVerified: true,
+          verificationToken: null,
+        },
       );
       return response;
     } else {

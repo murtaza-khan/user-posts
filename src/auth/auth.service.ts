@@ -33,6 +33,11 @@ export class AuthService {
       });
     });
   }
+
+  async getAccessToken(email, sub) {
+    return this.jwtService.sign({email, sub});
+  }
+
   async login(person: any) {
     try {
       let user: any = await this.validateUser(person.email, person.password);

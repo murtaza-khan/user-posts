@@ -11,6 +11,7 @@ export interface User extends Document {
   verificationToken: number;
   isGeneralCounselor: boolean;
   userType: string;
+  isEmailVerified: boolean;
   firmName: string;
   firmWebsite: string;
   billingStructure: string;

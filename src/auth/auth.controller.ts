@@ -17,8 +17,9 @@ export class AuthController {
   @Post('register')
   async create(@Body() userData: UserDto): Promise<any> {
 
-    const response = await this.userService.save(userData);
-    return response;
+    const user = await this.userService.save(userData);
+    const accessToken = this.authService.getAccessToken(user.email, user._id);
+    return { accessToken, user };
   }
 
   @Post('email-verification')
