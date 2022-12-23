@@ -4,13 +4,13 @@ import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
-import { ProfileModule } from './profile/profile.module';
+import { ProfileModule } from './general/general.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
 @Module({
   imports: [
-    MongooseModule.forRoot(`${process.env.DATA_BASE}`),
+    MongooseModule.forRoot(`${process.env.LOCAL_DB}`),
     UserModule,
     AuthModule,
     ProfileModule

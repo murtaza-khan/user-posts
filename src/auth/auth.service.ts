@@ -19,20 +19,22 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) { }
   async validateUser(email: string, pass: string): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      const person = await this.userService.findByCriteria({ email });
-      if (!person) {
-        return reject({ message: 'Email not found!', status: 404 });
-      }
-      bcrypt.compare(pass, person.password, (err, res) => {
-        if (res) {
-          return resolve(person);
-        } else {
-          resolve(new UnauthorizedException('Password Incorrect!'));
-        }
-      });
-    });
+    const person = await this.userService.findByCriteria({ email });
+    if (!person) {
+      return constructErrorResponse({ message: 'Email not found!', status: 404 });
+    }
+    const res = await bcrypt.compare(pass, person.password)
+    if (res === true) {
+      return person;
+    } else {
+      return constructErrorResponse({ message: 'Password Incorrect!', status: 401 });
+    }
   }
+
+  async getAccessToken(email, sub) {
+    return this.jwtService.sign({ email, sub });
+  }
+
   async login(person: any) {
     try {
       let user: any = await this.validateUser(person.email, person.password);
@@ -40,8 +42,8 @@ export class AuthService {
       const accessToken = this.jwtService.sign(payload);
       const response = JSON.parse(JSON.stringify(user));
       delete response.password;
-      delete response.verification_token;
-      return constructSuccessResponse({ accessToken, user: response }, 'You are logged in Successfully!');
+      delete response.verificationToken;
+      return constructSuccessResponse({ accessToken, user: response }, 'You are logged in successfully!');
     } catch (error) {
       return constructErrorResponse(error);
     }
@@ -50,8 +52,8 @@ export class AuthService {
   async generateToken(data: GenerateTokenDto) {
     const response = await this.userService.generateToken(
       data.email);
-    if (response && response.nModified > 0) {
-      return constructSuccessResponse({}, 'Token Generated Successfully!');
+    if (response && response.n > 0) {
+      return constructSuccessResponse({}, 'Token generated successfully!');
     } else {
       return constructErrorResponse({ message: 'Token not generated!', status: 400 });
     }
@@ -60,10 +62,11 @@ export class AuthService {
   async verificationToken(data: VerificationTokenDto) {
     const response = await this.userService.verifyToken(
       data.email,
-      data.verification_token,
+      data.verificationToken,
     );
-    if (response && response.nModified > 0) {
-      return constructSuccessResponse({}, 'Token Verified Successfully!');
+    if (response && response.response.nModified > 0) {
+      const accessToken = await this.getAccessToken(response.user.email, response.user._id);
+      return constructSuccessResponse({ accessToken }, 'Token verified successfully!');
     } else {
       return constructErrorResponse({ message: 'Token not Verified!', status: 400 });
     }

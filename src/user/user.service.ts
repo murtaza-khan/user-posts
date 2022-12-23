@@ -7,19 +7,20 @@ import { constructErrorResponse, constructSuccessResponse } from '../common/wrap
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
+  constructor(
+    @InjectModel('User') private readonly userModel: Model<User>
+  ) { }
 
-  async save(user: any): Promise<any> {
+  async save(userData: any): Promise<any> {
     try {
-      const p = user;
-      await this.beforeCreate(p);
-      p.password = await passwordBcrypt(p.password);
-      const createdUser = new this.userModel(p);
-      const userResponse: any = await createdUser.save();
-      const response = JSON.parse(JSON.stringify(userResponse));
-      delete response.password;
+      await this.beforeCreate(userData);
+      userData.password = await passwordBcrypt(userData.password);
+      let user = await (new this.userModel({ ...userData, isEmailVerified: false })).save();
+
+      user = JSON.parse(JSON.stringify(user));
+      delete user.password;
       await this.generateToken(user.email);
-      return constructSuccessResponse(response, 'User Registered Successfully!');
+      return constructSuccessResponse(user, 'User registered successfully!');
     } catch (error) {
       return constructErrorResponse(error);
     }
@@ -66,35 +67,52 @@ export class UserService {
     const me = await this.userModel.findOne({
       email,
     });
-    return me;
+    const user = JSON.parse(JSON.stringify(me));
+    delete user.password;
+    delete user.verificationToken;
+    return constructSuccessResponse(user, "User fetched successfully");
   }
   async generateToken(email) {
-    const verification_token = Math.floor(1000 + Math.random() * 9000);
+    const verificationToken = Math.floor(100000 + Math.random() * 900000);
 
     const response = await this.userModel.updateOne(
       {
         email,
       },
-      //token hardcoded 1234 for now. It will be used random token when we integrated email
-      { verification_token: 1234 },
+      //token hardcoded 123456 for now. It will be used random token when we integrated email
+      { verificationToken: 123456 },
     );
     return response;
   }
 
-  async verifyToken(email, verification_token) {
+  async verifyToken(email, verificationToken) {
 
     const user = await this.userModel.findOne({
-      email, verification_token
+      email
     });
-    if (user) {
+    if (user && user.emailVerificationAttempts > 4) {
+      return constructErrorResponse({ message: 'Account is Blocked!', status: 404 });
+    }
+    if (user && user.verificationToken === verificationToken) {
       const response = await this.userModel.updateOne(
         {
           email,
         },
-        { verification_token: null },
+        {
+          isEmailVerified: true,
+          verificationToken: null,
+        },
       );
-      return response;
+      return { response, user };
     } else {
+      await this.userModel.updateOne(
+        {
+          email,
+        },
+        {
+          emailVerificationAttempts: user.emailVerificationAttempts ? user.emailVerificationAttempts + 1 : 1,
+        },
+      );
       return constructErrorResponse({ message: 'Invalid token!', status: 404 });
     }
   }
@@ -116,6 +134,38 @@ export class UserService {
       }
     } catch (error) {
       return constructErrorResponse(error);
+    }
+  }
+
+  async updateProfile(data: any): Promise<any> {
+    try {
+      const user = await this.userModel.findByIdAndUpdate(
+        data.userId,
+        data,
+        { new: true }
+      );
+      const response = user.toJSON();
+      delete response.password;
+      delete response.verificationToken;
+      return constructSuccessResponse(response, 'Profile updated successfully!');
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async findUserProfile(data: any): Promise<any> {
+    let user: any = await this.findUserAndPopulateProfile(
+      data.email,
+    );
+    if (user) {
+      const profile = await this.userModel.findOne({ _id: user._id });
+      const response = JSON.parse(JSON.stringify(user));
+      delete response.password;
+      delete response.verificationToken;
+      user = { user: response, profile };
+      return user;
+    } else {
+      constructErrorResponse({ message: 'User not found', status: 404 });
     }
   }
 }

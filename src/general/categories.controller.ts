@@ -2,16 +2,12 @@ import {
   Controller,
   Post,
   Body,
-  Put,
-  Param,
-  Get,
   UseGuards,
-  Request,
-  Patch,
+
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ProfileService } from './profile.service';
-import { Language, ProfileType } from './Dto/profile.types';
+import { ProfileService } from './general.service';
+import { Category } from './Dto/general.types';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { constructSuccessResponse } from '../common/wrappers';
 
@@ -21,14 +17,14 @@ import { constructSuccessResponse } from '../common/wrappers';
 export class CategoriesController {
   constructor(private profileService: ProfileService) { }
 
-  @Get('area-categories')
+  // @Get('categories')
   async getCategories(): Promise<any> {
     return constructSuccessResponse(await this.profileService.findAreas());
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Post('area-categories')
-  async createCategories(@Body() data: Language): Promise<any> {
+  // @Post('categories')
+  async createCategories(@Body() data: Category): Promise<any> {
     return this.profileService.createArea(data);
   }
 }
