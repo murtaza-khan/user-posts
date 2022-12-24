@@ -38,12 +38,26 @@ export class AuthService {
   async login(person: any) {
     try {
       let user: any = await this.validateUser(person.email, person.password);
-      const payload = { email: user.email, sub: user._id };
-      const accessToken = this.jwtService.sign(payload);
-      const response = JSON.parse(JSON.stringify(user));
-      delete response.password;
-      delete response.verificationToken;
-      return constructSuccessResponse({ accessToken, user: response }, 'You are logged in successfully!');
+
+      const response = {
+        user: undefined,
+        accessToken: undefined,
+      };
+
+      if (user.isEmailVerified) {
+        const payload = { email: user.email, sub: user._id };
+        const accessToken = this.jwtService.sign(payload);
+
+        response.accessToken = accessToken;
+      }
+
+      user = JSON.parse(JSON.stringify(user));
+      delete user.password;
+      delete user.verificationToken;
+
+      response.user = user;
+      
+      return constructSuccessResponse(response, 'You are logged in successfully!');
     } catch (error) {
       return constructErrorResponse(error);
     }

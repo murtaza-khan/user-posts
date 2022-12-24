@@ -90,10 +90,19 @@ export class UserService {
     const user = await this.userModel.findOne({
       email
     });
-    if (user && user.emailVerificationAttempts > 4) {
-      return constructErrorResponse({ message: 'Account is Blocked!', status: 404 });
+    if (!user) {
+      return constructErrorResponse({ message: 'Invalid token!', status: 400 });
     }
-    if (user && user.verificationToken === verificationToken) {
+
+    if (user.isEmailVerified) {
+      return constructErrorResponse({ message: 'You email is already verified', status: 400 });
+    }
+
+    if (user.emailVerificationAttempts > 4) {
+      return constructErrorResponse({ message: 'Account is Blocked please contact support', status: 400 });
+    }
+
+    if (user.verificationToken == verificationToken) {
       const response = await this.userModel.updateOne(
         {
           email,
