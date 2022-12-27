@@ -93,7 +93,11 @@ export class UserService {
       email
     });
     if (!user) {
-      return constructErrorResponse({ message: 'Invalid code!', status: 400 });
+      return constructErrorResponse({ message: 'Invalid code', status: 400 });
+    }
+
+    if (!user.verificationToken) {
+      return constructErrorResponse({ message: 'Code not generated', status: 400 });
     }
 
     if (source === VerifyCodeSource.EMAIL_VERIFICATION) {
@@ -102,7 +106,7 @@ export class UserService {
       }
     }
 
-    if (user.emailVerificationAttempts >= 4) {
+    if (user.emailVerificationAttempts >= 10) {
       return constructErrorResponse({ message: 'Account is blocked, please contact support', status: 403 });
     }
 
@@ -114,6 +118,7 @@ export class UserService {
         },
         {
           isEmailVerified: true,
+          emailVerificationAttempts: 0,
           verificationToken: null,
         },
       );
