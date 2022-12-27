@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray } from 'class-validator';
 
 class Language {
   @ApiProperty({
@@ -10,6 +10,16 @@ class Language {
   name: string;
 
 
+}
+
+
+class State {
+  @ApiProperty({
+    type: String,
+  })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 }
 
 class Category {
@@ -23,9 +33,9 @@ class Category {
   @ApiProperty({
     type: [String],
   })
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
   states: string[];
 }
 
-export { Language, Category };
+export { Language, Category, State };

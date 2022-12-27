@@ -10,3 +10,7 @@ export const LanguageSchema = new mongoose.Schema({
   name: String,
 });
 
+export const StateSchema = new mongoose.Schema({
+  name: String,
+});
+

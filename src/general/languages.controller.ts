@@ -10,7 +10,7 @@ import {
   Patch,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ProfileService } from './general.service';
+import { GeneralService } from './general.service';
 import { Language } from './Dto/general.types';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { constructSuccessResponse } from '../common/wrappers';
@@ -19,17 +19,17 @@ import { constructSuccessResponse } from '../common/wrappers';
 @ApiBearerAuth('JWT-auth')
 @ApiTags('Languages')
 export class LanguagesController {
-  constructor(private profileService: ProfileService) { }
+  constructor(private generalService: GeneralService) { }
   // @Get('languages')
   async getLanguages(): Promise<any> {
-    return constructSuccessResponse(await this.profileService.findLanguages());
+    return constructSuccessResponse(await this.generalService.findLanguages());
   }
 
   @UseGuards(AuthGuard('jwt'))
   // @Post('language')
   async createLanguage(@Body() data: Language): Promise<any> {
     return constructSuccessResponse(
-      await this.profileService.createLanguage(data),
+      await this.generalService.createLanguage(data),
     );
   }
 }

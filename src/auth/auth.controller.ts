@@ -4,7 +4,6 @@ import { GenerateTokenDto, LoginDto, UserDto, VerificationTokenDto } from '../us
 import { constructSuccessResponse } from '../common/wrappers';
 import { UserService } from '../user/user.service';
 import { ApiTags } from '@nestjs/swagger';
-import { ProfileService } from '../general/general.service';
 
 @ApiTags('Auth')
 @Controller('auth')

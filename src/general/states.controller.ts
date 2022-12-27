@@ -8,24 +8,24 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GeneralService } from './general.service';
-import { Category } from './Dto/general.types';
+import { State } from './Dto/general.types';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { constructSuccessResponse } from '../common/wrappers';
 
 @Controller('')
-@ApiTags('Categories')
-export class CategoriesController {
+@ApiTags('States')
+export class StatesController {
   constructor(private generalService: GeneralService) { }
 
-  @Get('categories')
-  async getCategories(): Promise<any> {
-    return constructSuccessResponse(await this.generalService.findAreas());
+  @Get('states')
+  async getStates(): Promise<any> {
+    return constructSuccessResponse(await this.generalService.getState());
   }
 
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'))
-  @Post('categories')
-  async createCategories(@Body() data: Category): Promise<any> {
-    return this.generalService.createArea(data);
+  @Post('state')
+  async createStates(@Body() data: State): Promise<any> {
+    return this.generalService.createState(data);
   }
 }
