@@ -370,6 +370,11 @@ class LoginDto {
 }
 
 class GenerateTokenDto {
+  @ApiProperty({ type: String, enum: VerifyCodeSource })
+  @IsString()
+  @IsOptional()
+  source: string = VerifyCodeSource.EMAIL_VERIFICATION;
+
   @ApiProperty({
     type: String,
   })

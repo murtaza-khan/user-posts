@@ -19,7 +19,7 @@ export class AuthController {
   }
 
   @ApiTags('Auth - Email Code Verification')
-  @Post('email-verification')
+  @Post('send-email-code')
   async generateToken(@Body() data: GenerateTokenDto): Promise<any> {
     return this.authService.generateToken(data);
   }
