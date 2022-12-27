@@ -35,12 +35,13 @@ export class GeneralService {
       let states = [];
       if (data.states && data.states.length) {
         for (const state of data.states) {
-          const stateResponse = await this.categoryModel.findOne({ _id: state });
+          const stateResponse = await this.stateModel.findOne({ _id: state });
           if (stateResponse) {
             states.push(state);
           }
         }
       }
+      
       const createdCategory = new this.categoryModel({ ...data, states });
       const response = await createdCategory.save();
       return constructSuccessResponse(response, 'Category created successfully');
@@ -53,16 +54,16 @@ export class GeneralService {
     let categoriesResponse = [];
     const categories: any = await this.categoryModel.find();
     for (const category of categories) {
+      let states = [];
       if (category.states.length) {
-        let states = []
         for (const state of category.states) {
-          const stateResponse = await this.categoryModel.findOne({ _id: state });
+          const stateResponse = await this.stateModel.findOne({ _id: state });
           if (stateResponse) {
             states.push(stateResponse);
           }
         }
-        categoriesResponse.push({ name: category.name, states })
       }
+      categoriesResponse.push({ name: category.name, states })
     }
     return constructSuccessResponse(categoriesResponse, 'Categories fetched successfully');
   }

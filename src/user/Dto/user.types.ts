@@ -370,6 +370,11 @@ class LoginDto {
 }
 
 class GenerateTokenDto {
+  @ApiProperty({ type: String, enum: VerifyCodeSource })
+  @IsString()
+  @IsOptional()
+  source: string = VerifyCodeSource.EMAIL_VERIFICATION;
+
   @ApiProperty({
     type: String,
   })
@@ -400,4 +405,14 @@ class VerificationTokenDto {
   verificationToken: number;
 }
 
-export { UserDto, DefaultMessageType, LoginDto, GenerateTokenDto, VerificationTokenDto, ProfileType, AddressType, BusinessType, ExperienceType, Language };
+class updatePasswordDto {
+
+  @ApiProperty({
+    type: String,
+  })
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}
+
+export { UserDto, DefaultMessageType, LoginDto, GenerateTokenDto, VerificationTokenDto, ProfileType, AddressType, BusinessType, ExperienceType, Language, updatePasswordDto };

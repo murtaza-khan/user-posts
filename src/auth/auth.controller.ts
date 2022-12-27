@@ -1,9 +1,9 @@
 import { AuthService } from './auth.service';
-import { Body, Controller, Post } from '@nestjs/common';
-import { GenerateTokenDto, LoginDto, UserDto, VerificationTokenDto } from '../user/Dto/user.types';
-import { constructSuccessResponse } from '../common/wrappers';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { GenerateTokenDto, LoginDto, updatePasswordDto, UserDto, VerificationTokenDto } from '../user/Dto/user.types';
 import { UserService } from '../user/user.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -19,7 +19,7 @@ export class AuthController {
   }
 
   @ApiTags('Auth - Email Code Verification')
-  @Post('email-verification')
+  @Post('send-email-code')
   async generateToken(@Body() data: GenerateTokenDto): Promise<any> {
     return this.authService.generateToken(data);
   }
@@ -34,5 +34,13 @@ export class AuthController {
   @Post('login')
   async login(@Body() data: LoginDto) {
     return this.authService.login(data);
+  }
+
+  @ApiTags('Auth - Update Password')
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(AuthGuard('jwt'))
+  @Post('update-password')
+  async updatePassword(@Request() req, @Body() data: updatePasswordDto): Promise<any> {
+    return this.userService.updatePassword(data,req.user.person);
   }
 }

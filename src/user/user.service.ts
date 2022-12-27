@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { passwordBcrypt } from '../common/bcrypt';
 import { User } from './models/user.model';
 import { constructErrorResponse, constructSuccessResponse } from '../common/wrappers';
-import { VerificationTokenDto } from './Dto/user.types';
+import { updatePasswordDto, VerificationTokenDto } from './Dto/user.types';
 import { VerifyCodeSource } from '../common/enums';
 
 @Injectable()
@@ -177,6 +177,20 @@ export class UserService {
       return user;
     } else {
       constructErrorResponse({ message: 'User not found', status: 404 });
+    }
+  }
+
+  async updatePassword(data: updatePasswordDto, userId: string): Promise<any> {
+    try {
+      data.password = await passwordBcrypt(data.password) as string;
+      await this.userModel.findByIdAndUpdate(
+        userId,
+        data,
+        { new: true }
+      );
+      return constructSuccessResponse({}, 'Password updated successfully!');
+    } catch (error) {
+      return constructErrorResponse(error);
     }
   }
 }
