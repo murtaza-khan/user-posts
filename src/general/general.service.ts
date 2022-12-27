@@ -2,8 +2,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Language } from './models/language.model';
-import { Area } from './models/area.model';
-import { UserService } from '../user/user.service';
+import { Category } from './models/category.model';
 import { constructErrorResponse, constructSuccessResponse } from '../common/wrappers';
 import { State } from './models/state.model';
 
@@ -11,7 +10,7 @@ import { State } from './models/state.model';
 export class GeneralService {
   constructor(
     @InjectModel('Language') private readonly languageModel: Model<Language>,
-    @InjectModel('Area') private readonly areaModel: Model<Area>,
+    @InjectModel('Category') private readonly categoryModel: Model<Category>,
     @InjectModel('State') private readonly stateModel: Model<State>,
   ) { }
 
@@ -19,7 +18,7 @@ export class GeneralService {
     try {
       const createdLanguage = new this.languageModel(data);
       const response = await createdLanguage.save();
-      return constructSuccessResponse(response, 'Language created Successfully!');
+      return constructSuccessResponse(response, 'Language created successfully');
     } catch (error) {
       return error;
     }
@@ -27,52 +26,52 @@ export class GeneralService {
 
   async findLanguages(_id?: any): Promise<any> {
     const response = await this.languageModel.find();
-    return constructSuccessResponse(response, 'Languages fetched successfully!');
+    return constructSuccessResponse(response, 'Languages fetched successfully');
 
   }
 
-  async createArea(data: any): Promise<any> {
+  async createCategory(data: any): Promise<any> {
     try {
       let states = [];
-      if (data.states && data.states.length > 0) {
+      if (data.states && data.states.length) {
         for (const state of data.states) {
-          const stateResponse = await this.stateModel.findOne({ _id: state });
+          const stateResponse = await this.categoryModel.findOne({ _id: state });
           if (stateResponse) {
             states.push(state);
           }
         }
       }
-      const createdArea = new this.areaModel({ ...data, states });
-      const response = await createdArea.save();
-      return constructSuccessResponse(response, 'Area created Successfully!');
+      const createdCategory = new this.categoryModel({ ...data, states });
+      const response = await createdCategory.save();
+      return constructSuccessResponse(response, 'Category created successfully');
     } catch (error) {
       return error;
     }
   }
 
-  async findAreas(_id?: any): Promise<any> {
-    let areasResponse = [];
-    const areas: any = await this.areaModel.find();
-    for (const area of areas) {
-      if (area.states.length) {
+  async findCategories(_id?: any): Promise<any> {
+    let categoriesResponse = [];
+    const categories: any = await this.categoryModel.find();
+    for (const category of categories) {
+      if (category.states.length) {
         let states = []
-        for (const state of area.states) {
-          const stateResponse = await this.stateModel.findOne({ _id: state });
+        for (const state of category.states) {
+          const stateResponse = await this.categoryModel.findOne({ _id: state });
           if (stateResponse) {
             states.push(stateResponse);
           }
         }
-        areasResponse.push({ name: area.name, states })
+        categoriesResponse.push({ name: category.name, states })
       }
     }
-    return constructSuccessResponse(areasResponse, 'Areas fetched Successfully!');
+    return constructSuccessResponse(categoriesResponse, 'Categories fetched successfully');
   }
 
   async createState(data: any): Promise<any> {
     try {
       const createdState = new this.stateModel(data);
       const response = await createdState.save();
-      return constructSuccessResponse(response, 'State Created Successfully!');
+      return constructSuccessResponse(response, 'State created successfully');
     } catch (error) {
       return error;
     }
@@ -81,7 +80,7 @@ export class GeneralService {
   async getState(): Promise<any> {
     try {
       const createdState = await this.stateModel.find();
-      return constructSuccessResponse(createdState, 'States data fetched successfully!');
+      return constructSuccessResponse(createdState, 'States fetched successfully');
     } catch (error) {
       return error;
     }

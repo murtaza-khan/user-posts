@@ -19,13 +19,13 @@ export class CategoriesController {
 
   @Get('categories')
   async getCategories(): Promise<any> {
-    return constructSuccessResponse(await this.generalService.findAreas());
+    return this.generalService.findCategories();
   }
 
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'))
   @Post('categories')
   async createCategories(@Body() data: Category): Promise<any> {
-    return this.generalService.createArea(data);
+    return this.generalService.createCategory(data);
   }
 }

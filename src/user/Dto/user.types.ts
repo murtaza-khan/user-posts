@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsArray, IsString, IsNotEmpty, IsBoolean, IsEnum, IsNumber, IsOptional } from 'class-validator';
-import { UserType } from '../../common/enums';
+import { UserType, VerifyCodeSource } from '../../common/enums';
 import { OfficeType, OralProficiency, RepresentType, SubscriptionPackages } from '../../common/enums';
 
 class AddressType {
@@ -379,11 +379,17 @@ class GenerateTokenDto {
 }
 
 class VerificationTokenDto {
+  @ApiProperty({ type: String, enum: VerifyCodeSource })
+  @IsString()
+  @IsOptional()
+  source: string = VerifyCodeSource.EMAIL_VERIFICATION;
+
   @ApiProperty({
     type: String,
   })
   @IsString()
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @ApiProperty({

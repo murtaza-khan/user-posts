@@ -20,6 +20,13 @@ class State {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @ApiProperty({
+    type: String,
+  })
+  @IsString()
+  @IsNotEmpty()
+  code: string;
 }
 
 class Category {

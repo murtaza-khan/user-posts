@@ -27,3 +27,8 @@ export enum SubscriptionPackages {
     'STANDARD' = 'STANDARD',
     'PREMIUM' = 'PREMIUM',
 }
+
+export enum VerifyCodeSource {
+    'EMAIL_VERIFICATION' = 'EMAIL_VERIFICATION',
+    'FORGOT_PASSWORD' = 'FORGOT_PASSWORD',
+}

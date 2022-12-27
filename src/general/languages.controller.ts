@@ -1,13 +1,7 @@
 import {
   Controller,
-  Post,
   Body,
-  Put,
-  Param,
-  Get,
   UseGuards,
-  Request,
-  Patch,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GeneralService } from './general.service';

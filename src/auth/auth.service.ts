@@ -73,11 +73,8 @@ export class AuthService {
     }
   }
 
-  async verificationToken(data: VerificationTokenDto) {
-    const response = await this.userService.verifyToken(
-      data.email,
-      data.verificationToken,
-    );
+  async verifyEmailCode(data: VerificationTokenDto) {
+    const response = await this.userService.verifyToken(data);
     if (response && response.response.nModified > 0) {
       const accessToken = await this.getAccessToken(response.user.email, response.user._id);
       return constructSuccessResponse({ accessToken }, 'Token verified successfully!');
@@ -85,6 +82,4 @@ export class AuthService {
       return constructErrorResponse({ message: 'Token not Verified!', status: 400 });
     }
   }
-
-
 }

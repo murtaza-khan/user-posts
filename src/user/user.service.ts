@@ -4,6 +4,8 @@ import { Model } from 'mongoose';
 import { passwordBcrypt } from '../common/bcrypt';
 import { User } from './models/user.model';
 import { constructErrorResponse, constructSuccessResponse } from '../common/wrappers';
+import { VerificationTokenDto } from './Dto/user.types';
+import { VerifyCodeSource } from '../common/enums';
 
 @Injectable()
 export class UserService {
@@ -85,24 +87,27 @@ export class UserService {
     return response;
   }
 
-  async verifyToken(email, verificationToken) {
+  async verifyToken({ email, source, verificationToken }: VerificationTokenDto) {
 
     const user = await this.userModel.findOne({
       email
     });
     if (!user) {
-      return constructErrorResponse({ message: 'Invalid token!', status: 400 });
+      return constructErrorResponse({ message: 'Invalid code!', status: 400 });
     }
 
-    if (user.isEmailVerified) {
-      return constructErrorResponse({ message: 'You email is already verified', status: 400 });
+    if (source === VerifyCodeSource.EMAIL_VERIFICATION) {
+      if (user.isEmailVerified) {
+        return constructErrorResponse({ message: 'You email is already verified', status: 409 });
+      }
     }
 
-    if (user.emailVerificationAttempts > 4) {
-      return constructErrorResponse({ message: 'Account is Blocked please contact support', status: 400 });
+    if (user.emailVerificationAttempts >= 4) {
+      return constructErrorResponse({ message: 'Account is blocked, please contact support', status: 403 });
     }
 
-    if (user.verificationToken == verificationToken) {
+    if (user.verificationToken === verificationToken) {
+      // Code in valid
       const response = await this.userModel.updateOne(
         {
           email,
@@ -113,17 +118,14 @@ export class UserService {
         },
       );
       return { response, user };
-    } else {
-      await this.userModel.updateOne(
-        {
-          email,
-        },
-        {
-          emailVerificationAttempts: user.emailVerificationAttempts ? user.emailVerificationAttempts + 1 : 1,
-        },
-      );
-      return constructErrorResponse({ message: 'Invalid token!', status: 404 });
     }
+
+    // Code in invalid
+    await this.userModel.updateOne(
+      { email },
+      { emailVerificationAttempts: user.emailVerificationAttempts ? user.emailVerificationAttempts + 1 : 1, },
+    );
+    return constructErrorResponse({ message: 'Invalid code!', status: 400 });
   }
 
   async beforeCreate(userData: any) {

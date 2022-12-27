@@ -6,7 +6,7 @@ export const UserSchema = new mongoose.Schema({
   phone: String,
   email: String,
   password: String,
-  verificationToken: String,
+  verificationToken: Number,
   isGeneralCounselor: Boolean,
   userType: String,
   isEmailVerified: Boolean,
