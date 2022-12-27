@@ -10,7 +10,7 @@ dotenv.config();
 
 @Module({
   imports: [
-    MongooseModule.forRoot(`${process.env.DATA_BASE}`),
+    MongooseModule.forRoot(`${process.env.LOCAL_DB}`),
     UserModule,
     AuthModule,
     ProfileModule
@@ -18,4 +18,4 @@ dotenv.config();
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
