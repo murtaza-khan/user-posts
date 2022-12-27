@@ -1,8 +1,9 @@
 import { AuthService } from './auth.service';
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { GenerateTokenDto, LoginDto, updatePasswordDto, UserDto, VerificationTokenDto } from '../user/Dto/user.types';
 import { UserService } from '../user/user.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -36,8 +37,10 @@ export class AuthController {
   }
 
   @ApiTags('Auth - Update Password')
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(AuthGuard('jwt'))
   @Post('update-password')
-  async updatePassword(@Body() data: updatePasswordDto): Promise<any> {
-    return this.userService.updatePassword(data);
+  async updatePassword(@Request() req, @Body() data: updatePasswordDto): Promise<any> {
+    return this.userService.updatePassword(data,req.user.person);
   }
 }

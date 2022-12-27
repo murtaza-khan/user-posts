@@ -180,15 +180,15 @@ export class UserService {
     }
   }
 
-  async updatePassword(data: updatePasswordDto): Promise<any> {
+  async updatePassword(data: updatePasswordDto, userId: string): Promise<any> {
     try {
       data.password = await passwordBcrypt(data.password) as string;
-      const user = await this.userModel.updateOne(
-        { email: data.email },
-        data);
-      if (user.n > 0) {
-        return constructSuccessResponse({}, 'Password updated successfully!');
-      }
+      await this.userModel.findByIdAndUpdate(
+        userId,
+        data,
+        { new: true }
+      );
+      return constructSuccessResponse({}, 'Password updated successfully!');
     } catch (error) {
       return constructErrorResponse(error);
     }

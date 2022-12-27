@@ -401,13 +401,6 @@ class VerificationTokenDto {
 }
 
 class updatePasswordDto {
-  @ApiProperty({
-    type: String,
-  })
-  @IsString()
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
 
   @ApiProperty({
     type: String,
