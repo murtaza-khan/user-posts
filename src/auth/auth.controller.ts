@@ -18,13 +18,13 @@ export class AuthController {
     return user;
   }
 
-  @ApiTags('Auth - Email Code Verification')
+  @ApiTags('Auth - Email Code')
   @Post('send-email-code')
   async generateToken(@Body() data: GenerateTokenDto): Promise<any> {
     return this.authService.generateToken(data);
   }
 
-  @ApiTags('Auth - Email Code Verification')
+  @ApiTags('Auth - Email Code')
   @Post('verify-email-code')
   async verifyToken(@Body() data: VerificationTokenDto): Promise<any> {
     return this.authService.verifyEmailCode(data);

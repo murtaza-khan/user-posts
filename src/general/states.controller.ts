@@ -15,14 +15,14 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class StatesController {
   constructor(private generalService: GeneralService) { }
 
-  @Get('states')
+  // @Get('states')
   getStates(): Promise<any> {
     return this.generalService.getState();
   }
 
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'))
-  @Post('state')
+  // @Post('state')
   createStates(@Body() data: State): Promise<any> {
     return this.generalService.createState(data);
   }

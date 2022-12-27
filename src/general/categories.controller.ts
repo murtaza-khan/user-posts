@@ -17,14 +17,14 @@ import { constructSuccessResponse } from '../common/wrappers';
 export class CategoriesController {
   constructor(private generalService: GeneralService) { }
 
-  @Get('categories')
+  // @Get('categories')
   async getCategories(): Promise<any> {
     return this.generalService.findCategories();
   }
 
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'))
-  @Post('categories')
+  // @Post('categories')
   async createCategories(@Body() data: Category): Promise<any> {
     return this.generalService.createCategory(data);
   }

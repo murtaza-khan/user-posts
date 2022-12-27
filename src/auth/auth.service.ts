@@ -56,7 +56,7 @@ export class AuthService {
       delete user.verificationToken;
 
       response.user = user;
-      
+
       return constructSuccessResponse(response, 'You are logged in successfully!');
     } catch (error) {
       return constructErrorResponse(error);
@@ -64,13 +64,8 @@ export class AuthService {
   }
 
   async generateToken(data: GenerateTokenDto) {
-    const response = await this.userService.generateToken(
-      data.email);
-    if (response && response.n > 0) {
-      return constructSuccessResponse({}, 'Token generated successfully!');
-    } else {
-      return constructErrorResponse({ message: 'Token not generated!', status: 400 });
-    }
+    await this.userService.generateToken(data.email);
+    return constructSuccessResponse({}, 'Token generated successfully!');
   }
 
   async verifyEmailCode(data: VerificationTokenDto) {
