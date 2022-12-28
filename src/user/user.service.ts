@@ -190,9 +190,7 @@ export class UserService {
       data.password = await passwordBcrypt(data.password) as string;
       await this.userModel.findByIdAndUpdate(
         userId,
-        data,
-        { new: true }
-      );
+        data);
       return constructSuccessResponse({}, 'Password updated successfully!');
     } catch (error) {
       return constructErrorResponse(error);

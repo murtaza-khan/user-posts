@@ -51,21 +51,8 @@ export class GeneralService {
   }
 
   async findCategories(_id?: any): Promise<any> {
-    let categoriesResponse = [];
-    const categories: any = await this.categoryModel.find();
-    for (const category of categories) {
-      let states = [];
-      if (category.states.length) {
-        for (const state of category.states) {
-          const stateResponse = await this.stateModel.findOne({ _id: state });
-          if (stateResponse) {
-            states.push(stateResponse);
-          }
-        }
-      }
-      categoriesResponse.push({ name: category.name, states })
-    }
-    return constructSuccessResponse(categoriesResponse, 'Categories fetched successfully');
+    const categories: any = await this.categoryModel.find().populate('states');
+    return constructSuccessResponse(categories, 'Categories fetched successfully');
   }
 
   async createState(data: any): Promise<any> {

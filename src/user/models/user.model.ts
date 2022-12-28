@@ -9,7 +9,6 @@ export interface User extends Document {
   email: string;
   password: string;
   verificationToken: number;
-  isGeneralCounselor: boolean;
   userType: string;
 
   isEmailVerified: boolean;
