@@ -5,5 +5,5 @@ export interface Category extends Document {
   name: string;
   states: [
     { type: mongoose.Schema.Types.ObjectId, ref: "State" },
-  ],
+  ]
 }

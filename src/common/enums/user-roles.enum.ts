@@ -32,3 +32,9 @@ export enum VerifyCodeSource {
     'EMAIL_VERIFICATION' = 'EMAIL_VERIFICATION',
     'FORGOT_PASSWORD' = 'FORGOT_PASSWORD',
 }
+
+export enum BillingStructure {
+    'PER_HOUR',
+    'ON_CONTINGENCY',
+    'FIXED_FEE'
+}
