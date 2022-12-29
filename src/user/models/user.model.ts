@@ -1,15 +1,17 @@
 import { Document } from 'mongoose';
-import { OfficeType, OralProficiency, RepresentType } from '../../common/enums';
+import { BillingStructure, OfficeType, OralProficiency, RepresentType } from '../../common/enums';
 import { AddressType, BusinessType, ExperienceType } from '../Dto/user.types';
 
 export interface User extends Document {
+
+  profilePhoto: string;
+  businessLogo: string;
   firstName: string;
   lastName: string;
   phone: string;
   email: string;
   password: string;
   verificationToken: number;
-  isGeneralCounselor: boolean;
   userType: string;
 
   isEmailVerified: boolean;
@@ -17,7 +19,7 @@ export interface User extends Document {
 
   firmName: string;
   firmWebsite: string;
-  billingStructure: string;
+  billingStructure: BillingStructure;
   ratePerHourMin?: string;
   ratePerHourMax?: string;
   onContingency: string;

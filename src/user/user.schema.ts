@@ -1,13 +1,14 @@
 import * as mongoose from 'mongoose';
 
 export const UserSchema = new mongoose.Schema({
+  profilePhoto: String,
+  businessLogo: String,
   firstName: String,
   lastName: String,
   phone: String,
   email: String,
   password: String,
   verificationToken: Number,
-  isGeneralCounselor: Boolean,
   userType: String,
   isEmailVerified: Boolean,
   emailVerificationAttempts: Number,

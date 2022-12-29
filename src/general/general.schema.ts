@@ -3,7 +3,9 @@ import * as mongoose from 'mongoose';
 
 export const CategorySchema = new mongoose.Schema({
   name: String,
-  states: Array
+  states: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "State" },
+  ],
 });
 
 export const LanguageSchema = new mongoose.Schema({
