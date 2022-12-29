@@ -4,14 +4,14 @@ import { Model } from 'mongoose';
 import { Language } from './models/language.model';
 import { Category } from './models/category.model';
 import { constructErrorResponse, constructSuccessResponse } from '../common/wrappers';
-import { State } from './models/state.model';
+import { StateDocument } from './models/state.model';
 
 @Injectable()
 export class GeneralService {
   constructor(
     @InjectModel('Language') private readonly languageModel: Model<Language>,
     @InjectModel('Category') private readonly categoryModel: Model<Category>,
-    @InjectModel('State') private readonly stateModel: Model<State>,
+    @InjectModel('State') private readonly stateModel: Model<StateDocument>,
   ) { }
 
   async createLanguage(data: any): Promise<any> {
