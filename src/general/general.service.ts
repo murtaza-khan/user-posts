@@ -1,17 +1,17 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Language } from './models/language.model';
-import { Category } from './models/category.model';
 import { constructErrorResponse, constructSuccessResponse } from '../common/wrappers';
-import { State } from './models/state.model';
+import { StateDocument } from './models/state.model';
+import { LanguageDocument } from './models/language.model';
+import { CategoryDocument } from './models/category.model';
 
 @Injectable()
 export class GeneralService {
   constructor(
-    @InjectModel('Language') private readonly languageModel: Model<Language>,
-    @InjectModel('Category') private readonly categoryModel: Model<Category>,
-    @InjectModel('State') private readonly stateModel: Model<State>,
+    @InjectModel('Language') private readonly languageModel: Model<LanguageDocument>,
+    @InjectModel('Category') private readonly categoryModel: Model<CategoryDocument>,
+    @InjectModel('State') private readonly stateModel: Model<StateDocument>,
   ) { }
 
   async createLanguage(data: any): Promise<any> {
@@ -51,21 +51,8 @@ export class GeneralService {
   }
 
   async findCategories(_id?: any): Promise<any> {
-    let categoriesResponse = [];
-    const categories: any = await this.categoryModel.find();
-    for (const category of categories) {
-      let states = [];
-      if (category.states.length) {
-        for (const state of category.states) {
-          const stateResponse = await this.stateModel.findOne({ _id: state });
-          if (stateResponse) {
-            states.push(stateResponse);
-          }
-        }
-      }
-      categoriesResponse.push({ name: category.name, states })
-    }
-    return constructSuccessResponse(categoriesResponse, 'Categories fetched successfully');
+    const categories: any = await this.categoryModel.find().populate('states');
+    return constructSuccessResponse(categories, 'Categories fetched successfully');
   }
 
   async createState(data: any): Promise<any> {

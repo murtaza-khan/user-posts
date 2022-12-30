@@ -2,15 +2,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { passwordBcrypt } from '../common/bcrypt';
-import { User } from './models/user.model';
 import { constructErrorResponse, constructSuccessResponse } from '../common/wrappers';
 import { updatePasswordDto, VerificationTokenDto } from './Dto/user.types';
 import { VerifyCodeSource } from '../common/enums';
+import { UserDocument } from './models/user.model';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel('User') private readonly userModel: Model<User>
+    @InjectModel('User') private readonly userModel: Model<UserDocument>
   ) { }
 
   async save(userData: any): Promise<any> {
@@ -93,7 +93,11 @@ export class UserService {
       email
     });
     if (!user) {
-      return constructErrorResponse({ message: 'Invalid code!', status: 400 });
+      return constructErrorResponse({ message: 'Invalid code', status: 400 });
+    }
+
+    if (!user.verificationToken) {
+      return constructErrorResponse({ message: 'Code not generated', status: 400 });
     }
 
     if (source === VerifyCodeSource.EMAIL_VERIFICATION) {
@@ -102,7 +106,7 @@ export class UserService {
       }
     }
 
-    if (user.emailVerificationAttempts >= 4) {
+    if (user.emailVerificationAttempts >= 10) {
       return constructErrorResponse({ message: 'Account is blocked, please contact support', status: 403 });
     }
 
@@ -114,6 +118,7 @@ export class UserService {
         },
         {
           isEmailVerified: true,
+          emailVerificationAttempts: 0,
           verificationToken: null,
         },
       );
@@ -185,9 +190,7 @@ export class UserService {
       data.password = await passwordBcrypt(data.password) as string;
       await this.userModel.findByIdAndUpdate(
         userId,
-        data,
-        { new: true }
-      );
+        data);
       return constructSuccessResponse({}, 'Password updated successfully!');
     } catch (error) {
       return constructErrorResponse(error);
