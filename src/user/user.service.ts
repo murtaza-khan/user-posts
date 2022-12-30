@@ -68,11 +68,8 @@ export class UserService {
   async findUserAndPopulateProfile(email) {
     const me = await this.userModel.findOne({
       email,
-    });
-    const user = JSON.parse(JSON.stringify(me));
-    delete user.password;
-    delete user.verificationToken;
-    return constructSuccessResponse(user, "User fetched successfully");
+    }).select('-password -verificationToken');
+    return constructSuccessResponse(me, "User fetched successfully");
   }
   async generateToken(email) {
     const verificationToken = Math.floor(100000 + Math.random() * 900000);
@@ -174,11 +171,8 @@ export class UserService {
       data.email,
     );
     if (user) {
-      const profile = await this.userModel.findOne({ _id: user._id });
-      const response = JSON.parse(JSON.stringify(user));
-      delete response.password;
-      delete response.verificationToken;
-      user = { user: response, profile };
+      const profile = await this.userModel.findOne({ _id: user._id }).select('-password -verificationToken');
+      user = { user, profile };
       return user;
     } else {
       constructErrorResponse({ message: 'User not found', status: 404 });

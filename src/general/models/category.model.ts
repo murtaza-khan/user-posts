@@ -11,8 +11,17 @@ export class Category {
   @Prop()
   name: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'State' })
-  states: State;
+  @Prop()
+  isIndividual: boolean;
+
+  @Prop()
+  isBusinesses: boolean;
+
+  @Prop()
+  isLocationDependency: boolean;
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'State' }] })
+  states: State[];
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

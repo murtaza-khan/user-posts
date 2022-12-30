@@ -142,138 +142,145 @@ class ExperienceType {
 }
 
 class ProfileType {
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: Number,
+  })
+  @IsString()
+  @IsOptional()
+  stepsCompleted: number;
+
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   firmName?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   firmWebsite?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   billingStructure?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   ratePerHourMin?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   ratePerHourMax?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   onContingency?: string;
 
-  // @ApiProperty({ enum: RepresentType })
+  @ApiProperty({ enum: RepresentType })
   @IsEnum(RepresentType)
   @IsString()
   @IsOptional()
   represent?: string;
 
-  // @ApiProperty({
-  //   type: [String],
-  // })
+  @ApiProperty({
+    type: [String],
+  })
   @IsArray()
   @IsOptional()
   practiceAreas?: [string];
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   practicingLawSince?: Date;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   licenseNumber?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   locationPermitted?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   biography?: string;
 
-  // @ApiProperty({ enum: OfficeType })
+  @ApiProperty({ enum: OfficeType })
   @IsEnum(OfficeType)
   @IsString()
   @IsOptional()
   officeType?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   primaryLanguage?: string;
 
-  // @ApiProperty({
-  //   type: String,
-  // })
+  @ApiProperty({
+    type: String,
+  })
   @IsString()
   @IsOptional()
   secondaryLanguage?: string;
 
-  // @ApiProperty({ enum: OralProficiency })
+  @ApiProperty({ enum: OralProficiency })
   @IsEnum(OralProficiency)
   @IsString()
   @IsOptional()
   oralProficiency?: string;
 
-  // @ApiProperty({ enum: OralProficiency })
+  @ApiProperty({ enum: OralProficiency })
   @IsEnum(OralProficiency)
   @IsString()
   @IsOptional()
   writtenProficiency?: string;
 
-  // @ApiProperty({
-  //   type: [ExperienceType],
-  // })
+  @ApiProperty({
+    type: [ExperienceType],
+  })
   @IsOptional()
   @IsArray()
   experience?: ExperienceType[];
 
-  // @ApiProperty({
-  //   type: [BusinessType],
-  // })
+  @ApiProperty({
+    type: [BusinessType],
+  })
   @IsOptional()
   @IsArray()
   business?: BusinessType[];
 
-  // @ApiProperty({
-  //   type: [AddressType],
-  // })
+  @ApiProperty({
+    type: [AddressType],
+  })
   @IsOptional()
   @IsArray()
   address?: AddressType[];

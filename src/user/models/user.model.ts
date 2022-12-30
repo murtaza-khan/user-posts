@@ -1,11 +1,77 @@
-import { Document } from 'mongoose';
+
 import { BillingStructure, OfficeType, OralProficiency, RepresentType } from '../../common/enums';
-import { AddressType, BusinessType, ExperienceType } from '../Dto/user.types';
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
+@Schema()
+class AddressType {
+  @Prop()
+  address: string;
+
+  @Prop()
+  postalCode: number;
+
+  @Prop()
+  city: string;
+
+  @Prop()
+  state: string;
+
+  @Prop()
+  country: string;
+}
+
+@Schema()
+class BusinessType {
+  @Prop()
+  name: string;
+
+  @Prop()
+  isGeneralCounselor?: boolean;
+
+  @Prop()
+  businessType?: string;
+
+  @Prop()
+  registeredDate?: string;
+
+  @Prop()
+  EIN?: string;
+
+  @Prop()
+  businessPhone?: string;
+
+  @Prop()
+  website?: string;
+
+  @Prop()
+  businessDescription?: string;
+
+
+  @Prop()
+  addresses?: AddressType[];
+
+}
+
+@Schema()
+class ExperienceType {
+  @Prop()
+  title: string;
+
+  @Prop()
+  description: string;
+
+  @Prop()
+  practiceAreas: string;
+
+  @Prop()
+  industry: string;
+
+  @Prop()
+  court: string;
+}
 
 @Schema()
 export class User {
@@ -45,14 +111,18 @@ export class User {
   @Prop()
   designation: string;
 
+
+  @Prop()
+  stepsCompleted: number
+
   @Prop()
   firmName: string;
-  
+
   @Prop()
   firmWebsite: string;
 
-  @Prop({ type: String, enum: BillingStructure })
-  billingStructure: BillingStructure;
+  @Prop({ type: [String], enum: BillingStructure })
+  billingStructure: BillingStructure[];
 
   @Prop()
   ratePerHourMin?: string;
@@ -107,8 +177,8 @@ export class User {
 
   @Prop()
   subscription: string;
-
 }
+
 
 export const UserSchema = SchemaFactory.createForClass(User);
 

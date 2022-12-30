@@ -41,7 +41,7 @@ export class GeneralService {
           }
         }
       }
-      
+
       const createdCategory = new this.categoryModel({ ...data, states });
       const response = await createdCategory.save();
       return constructSuccessResponse(response, 'Category created successfully');
@@ -51,8 +51,13 @@ export class GeneralService {
   }
 
   async findCategories(_id?: any): Promise<any> {
-    const categories: any = await this.categoryModel.find().populate('states');
+    const categories: any = await this.categoryModel.find().select('-states');
     return constructSuccessResponse(categories, 'Categories fetched successfully');
+  }
+
+  async findCategoryById(id?: string): Promise<any> {
+    const categories: any = await this.categoryModel.findById(id).populate('states');
+    return constructSuccessResponse(categories, 'Category fetched successfully');
   }
 
   async createState(data: any): Promise<any> {
