@@ -43,9 +43,9 @@ export class AuthService {
         user: undefined,
         accessToken: undefined,
       };
-
+      
       if (user.isEmailVerified) {
-        const payload = { email: user.email, sub: user._id };
+        const payload = { email: user.email, sub: user._id, userType: user.userType };
         const accessToken = this.jwtService.sign(payload);
 
         response.accessToken = accessToken;

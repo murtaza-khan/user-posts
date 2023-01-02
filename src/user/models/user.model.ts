@@ -1,12 +1,11 @@
 
-import { BillingStructure, OfficeType, OralProficiency, RepresentType } from '../../common/enums';
+import { BillingStructure, OfficeType, OralProficiency, RepresentType, BusinessType, UserType, LanguageEnumType } from '../../common/enums';
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
-@Schema()
-class AddressType {
+class Address {
   @Prop()
   address: string;
 
@@ -23,19 +22,18 @@ class AddressType {
   country: string;
 }
 
-@Schema()
-class BusinessType {
+class Business {
   @Prop()
   name: string;
 
   @Prop()
   isGeneralCounselor?: boolean;
 
-  @Prop()
-  businessType?: string;
+  @Prop({ type: [String], enum: BusinessType })
+  businessType?: BusinessType;
 
   @Prop()
-  registeredDate?: string;
+  registeredDate?: Date;
 
   @Prop()
   EIN?: string;
@@ -51,12 +49,11 @@ class BusinessType {
 
 
   @Prop()
-  addresses?: AddressType[];
+  addresses?: Address[];
 
 }
 
-@Schema()
-class ExperienceType {
+class Experience {
   @Prop()
   title: string;
 
@@ -71,6 +68,20 @@ class ExperienceType {
 
   @Prop()
   court: string;
+}
+
+class Language {
+  @Prop()
+  language: string;
+
+  @Prop({ type: String, enum: LanguageEnumType })
+  languageType: LanguageEnumType;
+
+  @Prop({ type: String, enum: OralProficiency })
+  oralProficiency: OralProficiency;
+
+  @Prop({ type: String, enum: OralProficiency })
+  writtenProficiency: OralProficiency;
 }
 
 @Schema()
@@ -99,7 +110,7 @@ export class User {
   @Prop()
   verificationToken: number;
 
-  @Prop()
+  @Prop({ type: String, enum: UserType })
   userType: string;
 
   @Prop()
@@ -110,7 +121,6 @@ export class User {
 
   @Prop()
   designation: string;
-
 
   @Prop()
   stepsCompleted: number
@@ -125,13 +135,16 @@ export class User {
   billingStructure: BillingStructure[];
 
   @Prop()
-  ratePerHourMin?: string;
+  ratePerHourMin?: number;
 
   @Prop()
-  ratePerHourMax?: string;
+  ratePerHourMax?: number;
 
   @Prop()
-  onContingency: string;
+  onContingency: number;
+
+  @Prop([Language])
+  languages: Language[]
 
   @Prop({ type: String, enum: RepresentType })
   represent: RepresentType;
@@ -154,26 +167,16 @@ export class User {
   @Prop({ type: String, enum: OfficeType })
   officeType: OfficeType;
 
-  @Prop()
-  primaryLanguage: string;
 
-  @Prop()
-  secondaryLanguage: string;
 
-  @Prop({ type: String, enum: OralProficiency })
-  oralProficiency: OralProficiency;
+  @Prop([Experience])
+  experiences: Experience[];
 
-  @Prop({ type: String, enum: OralProficiency })
-  writtenProficiency: OralProficiency;
+  @Prop([Business])
+  businesses: Business[];
 
-  @Prop([ExperienceType])
-  experiences: ExperienceType[];
-
-  @Prop([BusinessType])
-  business: BusinessType[];
-
-  @Prop([AddressType])
-  addresses: AddressType[];
+  @Prop([Address])
+  addresses: Address[];
 
   @Prop()
   subscription: string;

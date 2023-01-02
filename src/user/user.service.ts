@@ -35,7 +35,7 @@ export class UserService {
     return await this.userModel.findOne({ _id: id });
   }
   async findByCriteria(criteria: {}): Promise<any> {
-    const user = await this.userModel.findOne(criteria);
+    const user = await this.userModel.findOne(criteria).select('-addresses -practiceAreas -experiences -businesses -billingStructure -languages');
     return user;
   }
 
@@ -150,10 +150,10 @@ export class UserService {
     }
   }
 
-  async updateProfile(data: any): Promise<any> {
+  async updateProfile(data: any, userId): Promise<any> {
     try {
       const user = await this.userModel.findByIdAndUpdate(
-        data.userId,
+        userId,
         data,
         { new: true }
       );
