@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsArray, Max, IsString, IsNotEmpty, IsBoolean, IsEnum, IsNumber, IsOptional } from 'class-validator';
-import { BillingStructure, LanguageEnumType, UserType, VerifyCodeSource } from '../../common/enums';
+import { BillingStructure, LanguageEnumType, OralProficiency, UserType, VerifyCodeSource } from '../../common/enums';
 import { OfficeType, RepresentType, SubscriptionPackages } from '../../common/enums';
 
 class AddressType {
@@ -157,20 +157,20 @@ class LanguageType {
   languageType?: string;
 
   @ApiProperty({
-    type: Number
+    enum: OralProficiency,
   })
-  @Max(5)
-  @IsNumber()
+  @IsEnum(OralProficiency)
+  @IsString()
   @IsOptional()
-  oralProficiency?: number;
+  oralProficiency?: string;
 
   @ApiProperty({
-    type: Number
+    enum: OralProficiency,
   })
-  @Max(5)
-  @IsNumber()
+  @IsEnum(OralProficiency)
+  @IsString()
   @IsOptional()
-  writtenProficiency?: number;
+  writtenProficiency?: string;
 }
 
 class ProfileType {

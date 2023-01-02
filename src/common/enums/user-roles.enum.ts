@@ -43,9 +43,9 @@ export enum BusinessType {
     'LLC',
     'LLP',
     'LLLP',
-    'Corporation',
-    'Partnership',
-    'Professional',
+    'CORPORATION',
+    'PARTNERSHIP',
+    'PROFESSIONAL',
 }
 
 

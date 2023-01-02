@@ -19,7 +19,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) { }
   async validateUser(email: string, pass: string): Promise<any> {
-    const person = await this.userService.findByCriteria({ email });
+    const person = await this.userService.findByCriteria({ email }, '-addresses -practiceAreas -experiences -businesses -billingStructure -languages');
     if (!person) {
       return constructErrorResponse({ message: 'Email not found!', status: 404 });
     }
@@ -43,7 +43,7 @@ export class AuthService {
         user: undefined,
         accessToken: undefined,
       };
-      
+
       if (user.isEmailVerified) {
         const payload = { email: user.email, sub: user._id, userType: user.userType };
         const accessToken = this.jwtService.sign(payload);

@@ -34,8 +34,8 @@ export class UserService {
   async findOne(id: any): Promise<any> {
     return await this.userModel.findOne({ _id: id });
   }
-  async findByCriteria(criteria: {}): Promise<any> {
-    const user = await this.userModel.findOne(criteria).select('-addresses -practiceAreas -experiences -businesses -billingStructure -languages');
+  async findByCriteria(criteria: {},select): Promise<any> {
+    const user = await this.userModel.findOne(criteria).select(select);
     return user;
   }
 
