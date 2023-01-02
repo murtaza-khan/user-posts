@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsArray } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray, IsBoolean } from 'class-validator';
 
 class Language {
   @ApiProperty({
@@ -36,6 +36,28 @@ class Category {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @ApiProperty({
+    type: Boolean,
+  })
+  @IsString()
+  @IsBoolean()
+  isIndividual: boolean;
+
+  @ApiProperty({
+    type: Boolean,
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  isBusinesses: boolean;
+
+  @ApiProperty({
+    type: Boolean,
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  isLocationDependency: boolean;
+
 
   @ApiProperty({
     type: [String],
