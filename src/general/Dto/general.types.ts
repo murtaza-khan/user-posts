@@ -40,8 +40,8 @@ class Category {
   @ApiProperty({
     type: Boolean,
   })
-  @IsString()
   @IsBoolean()
+  @IsNotEmpty()
   isIndividual: boolean;
 
   @ApiProperty({

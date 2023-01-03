@@ -38,3 +38,18 @@ export enum BillingStructure {
     'ON_CONTINGENCY',
     'FIXED_FEE'
 }
+
+export enum BusinessType {
+    'LLC',
+    'LLP',
+    'LLLP',
+    'CORPORATION',
+    'PARTNERSHIP',
+    'PROFESSIONAL',
+}
+
+
+export enum LanguageEnumType {
+    'PRIMARY',
+    'SECONDARY'
+}
