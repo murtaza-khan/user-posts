@@ -7,8 +7,7 @@ export enum UserType {
 
 export enum RepresentType {
     'INDIVIDUAL' = 'INDIVIDUAL',
-    'COMPANIES' = 'COMPANIES',
-    'BOTH' = 'BOTH'
+    'COMPANIES' = 'COMPANIES'
 }
 
 export enum OfficeType {

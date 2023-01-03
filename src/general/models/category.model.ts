@@ -18,7 +18,7 @@ export class Category {
   isBusiness: boolean;
 
   @Prop()
-  isLocationDependency: boolean;
+  isLocationDependent: boolean;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'State' }] })
   states: State[];

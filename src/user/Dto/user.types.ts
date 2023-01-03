@@ -263,11 +263,15 @@ class ProfileType {
   @IsOptional()
   onContingency?: number;
 
-  @ApiProperty({ enum: RepresentType })
-  @IsEnum(RepresentType)
-  @IsString()
+  @ApiProperty({
+    enum: RepresentType,
+    isArray: true,
+    example: [RepresentType.COMPANIES, RepresentType.INDIVIDUAL]
+  })
+  @IsEnum(RepresentType, { each: true })
+  @IsArray()
   @IsOptional()
-  represent?: string;
+  represent?: RepresentType[];
 
   @ApiProperty({
     type: [String],
@@ -289,7 +293,7 @@ class ProfileType {
   })
   @IsArray()
   @IsOptional()
-  Licenses?: LicenseType[];
+  licenses?: LicenseType[];
 
   @ApiProperty({
     type: String,

@@ -56,7 +56,7 @@ class Category {
   })
   @IsBoolean()
   @IsNotEmpty()
-  isLocationDependency: boolean;
+  isLocationDependent: boolean;
 
 
   @ApiProperty({
