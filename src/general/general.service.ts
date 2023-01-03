@@ -55,7 +55,7 @@ export class GeneralService {
 
     const criteria: any = {};
     if (userType != null && userType === UserType.BUSINESS) {
-      criteria.isBusinesses = true
+      criteria.isBusiness = true
     }
     if (userType != null && userType === UserType.INDIVIDUAL) {
       criteria.isIndividual = true;

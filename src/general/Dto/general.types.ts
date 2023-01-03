@@ -49,7 +49,7 @@ class Category {
   })
   @IsBoolean()
   @IsNotEmpty()
-  isBusinesses: boolean;
+  isBusiness: boolean;
 
   @ApiProperty({
     type: Boolean,

@@ -15,7 +15,7 @@ export class Category {
   isIndividual: boolean;
 
   @Prop()
-  isBusinesses: boolean;
+  isBusiness: boolean;
 
   @Prop()
   isLocationDependency: boolean;
