@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsArray, Max, IsString, IsNotEmpty, IsBoolean, IsEnum, IsNumber, IsOptional } from 'class-validator';
-import { BillingStructure, LanguageEnumType, OralProficiency, UserType, VerifyCodeSource } from '../../common/enums';
-import { OfficeType, RepresentType, SubscriptionPackages } from '../../common/enums';
+import { AddressTypeEnum, BillingStructure, LanguageEnumType, OralProficiency, UserType, VerifyCodeSource } from '../../common/enums';
+import { OfficeType, RepresentType, SubscriptionPackages, BusinessType as BusinessTypeEnum } from '../../common/enums';
 
 class AddressType {
   @ApiProperty({
@@ -10,6 +10,13 @@ class AddressType {
   @IsString()
   @IsNotEmpty()
   address: string;
+
+  @ApiProperty({
+    enum: AddressTypeEnum,
+  })
+  @IsEnum(AddressTypeEnum)
+  @IsOptional()
+  addressType: string;
 
   @ApiProperty({
     type: Number,
@@ -56,11 +63,11 @@ class BusinessType {
   isGeneralCounselor?: boolean;
 
   @ApiProperty({
-    type: String,
+    enum: BusinessTypeEnum,
   })
-  @IsString()
+  @IsEnum(BusinessTypeEnum)
   @IsOptional()
-  businessType?: string;
+  businessType?: BusinessTypeEnum;
 
   @ApiProperty({
     type: String,
@@ -120,11 +127,11 @@ class ExperienceType {
   description: string;
 
   @ApiProperty({
-    type: String,
+    type: Array,
   })
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  practiceAreas: string;
+  practiceAreas: string[];
 
   @ApiProperty({
     type: String,
@@ -173,7 +180,37 @@ class LanguageType {
   writtenProficiency?: string;
 }
 
+class LicenseType {
+  @ApiProperty({
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  state: string;
+
+  @ApiProperty({
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  licenseNumber: string;
+}
+
 class ProfileType {
+  @ApiProperty({
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  designation: string;
+
+  @ApiProperty({
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  roleAtCompany: string;
+
   @ApiProperty({
     type: Number,
   })
@@ -197,11 +234,13 @@ class ProfileType {
 
   @ApiProperty({
     enum: BillingStructure,
+    isArray: true,
+    example: [BillingStructure.FIXED_FEE, BillingStructure.ON_CONTINGENCY, BillingStructure.PER_HOUR]
   })
-  @IsEnum(BillingStructure)
-  @IsString()
+  @IsEnum(BillingStructure, { each: true })
+  @IsArray()
   @IsOptional()
-  billingStructure?: string;
+  billingStructure?: BillingStructure[];
 
   @ApiProperty({
     type: Number,
@@ -224,11 +263,15 @@ class ProfileType {
   @IsOptional()
   onContingency?: number;
 
-  @ApiProperty({ enum: RepresentType })
-  @IsEnum(RepresentType)
-  @IsString()
+  @ApiProperty({
+    enum: RepresentType,
+    isArray: true,
+    example: [RepresentType.COMPANIES, RepresentType.INDIVIDUAL]
+  })
+  @IsEnum(RepresentType, { each: true })
+  @IsArray()
   @IsOptional()
-  represent?: string;
+  represent?: RepresentType[];
 
   @ApiProperty({
     type: [String],
@@ -245,18 +288,19 @@ class ProfileType {
   practicingLawSince?: Date;
 
   @ApiProperty({
-    type: String,
+    type: LicenseType,
+    isArray: true
   })
-  @IsString()
+  @IsArray()
   @IsOptional()
-  licenseNumber?: string;
+  licenses?: LicenseType[];
 
   @ApiProperty({
     type: String,
   })
-  @IsString()
+  @IsArray()
   @IsOptional()
-  locationPermitted?: string;
+  locationPermitted?: string[];
 
   @ApiProperty({
     type: String,

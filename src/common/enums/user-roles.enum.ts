@@ -7,8 +7,7 @@ export enum UserType {
 
 export enum RepresentType {
     'INDIVIDUAL' = 'INDIVIDUAL',
-    'COMPANIES' = 'COMPANIES',
-    'BOTH' = 'BOTH'
+    'COMPANIES' = 'COMPANIES'
 }
 
 export enum OfficeType {
@@ -34,9 +33,9 @@ export enum VerifyCodeSource {
 }
 
 export enum BillingStructure {
-    'PER_HOUR',
-    'ON_CONTINGENCY',
-    'FIXED_FEE'
+    'PER_HOUR' = 'PER_HOUR',
+    'ON_CONTINGENCY' = 'ON_CONTINGENCY',
+    'FIXED_FEE' = 'FIXED_FEE'
 }
 
 export enum BusinessType {
@@ -48,8 +47,13 @@ export enum BusinessType {
     'PROFESSIONAL',
 }
 
-
 export enum LanguageEnumType {
     'PRIMARY',
     'SECONDARY'
+}
+
+export enum AddressTypeEnum {
+    'REGISTERED' = 'REGISTERED',
+    'BUSINESS_HQ' = 'BUSINESS_HQ',
+    'AGENT' = 'AGENT',
 }
