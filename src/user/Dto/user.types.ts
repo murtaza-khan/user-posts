@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsArray, Max, IsString, IsNotEmpty, IsBoolean, IsEnum, IsNumber, IsOptional } from 'class-validator';
-import { AddressTypeEnum, BillingStructure, LanguageEnumType, OralProficiency, UserType, VerifyCodeSource } from '../../common/enums';
+import { AddressTypeEnum, BillingStructure, OralProficiency, UserType, VerifyCodeSource } from '../../common/enums';
 import { OfficeType, RepresentType, SubscriptionPackages, BusinessType as BusinessTypeEnum } from '../../common/enums';
 
 class AddressType {
@@ -156,9 +156,8 @@ class LanguageType {
   language: string;
 
   @ApiProperty({
-    enum: LanguageEnumType,
+    type: String,
   })
-  @IsEnum(LanguageEnumType)
   @IsString()
   @IsOptional()
   languageType?: string;

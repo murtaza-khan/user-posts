@@ -47,11 +47,6 @@ export enum BusinessType {
     'PROFESSIONAL',
 }
 
-export enum LanguageEnumType {
-    'PRIMARY',
-    'SECONDARY'
-}
-
 export enum AddressTypeEnum {
     'REGISTERED' = 'REGISTERED',
     'BUSINESS_HQ' = 'BUSINESS_HQ',

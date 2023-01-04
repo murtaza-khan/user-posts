@@ -1,5 +1,5 @@
 
-import { BillingStructure, OfficeType, OralProficiency, RepresentType, BusinessType, UserType, LanguageEnumType, AddressTypeEnum } from '../../common/enums';
+import { BillingStructure, OfficeType, OralProficiency, RepresentType, BusinessType, UserType, AddressTypeEnum } from '../../common/enums';
 import * as mongoose from 'mongoose';
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
@@ -81,8 +81,8 @@ class Language {
   @Prop({ type: { type: mongoose.Schema.Types.ObjectId, ref: 'Language' } })
   language: LanguageModel;
 
-  @Prop({ type: String, enum: LanguageEnumType })
-  languageType: LanguageEnumType;
+  @Prop()
+  languageType: string;
 
   @Prop({ type: String, enum: OralProficiency })
   oralProficiency: OralProficiency;
