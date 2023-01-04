@@ -295,7 +295,7 @@ class ProfileType {
   licenses?: LicenseType[];
 
   @ApiProperty({
-    type: String,
+    type: [String],
   })
   @IsArray()
   @IsOptional()

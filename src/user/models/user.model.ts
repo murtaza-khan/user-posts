@@ -22,8 +22,8 @@ class Address {
   @Prop()
   city: string;
 
-  @Prop()
-  state: string;
+  @Prop( { type: mongoose.Schema.Types.ObjectId, ref: 'State' })
+  state: State;
 
   @Prop()
   country: string;
@@ -164,8 +164,8 @@ export class User {
   @Prop([Language])
   languages: Language[]
 
-  @Prop({ type: String, enum: RepresentType })
-  represent: RepresentType;
+  @Prop({ type: [String], enum: RepresentType })
+  represent: RepresentType[];
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }] })
   practiceAreas: Category[];
