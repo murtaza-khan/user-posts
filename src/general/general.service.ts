@@ -54,10 +54,10 @@ export class GeneralService {
   async findCategories(userType): Promise<any> {
 
     const criteria: any = {};
-    if (userType != null && userType === UserType.BUSINESS) {
+    if (userType === UserType.BUSINESS) {
       criteria.isBusiness = true
     }
-    if (userType != null && userType === UserType.INDIVIDUAL) {
+    if (userType === UserType.INDIVIDUAL) {
       criteria.isIndividual = true;
     }
     const categories: any = await this.categoryModel.find(criteria).select('-states');
