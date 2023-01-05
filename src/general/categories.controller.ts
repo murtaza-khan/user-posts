@@ -23,7 +23,7 @@ export class CategoriesController {
   @UseGuards(MyAuthGuard)
   @Get('categories')
   async getCategories(@Request() req): Promise<any> {
-    return this.generalService.findCategories(req.user.userType);
+    return this.generalService.findCategories(req.user?.userType);
   }
 
   @Get('category/:id')
