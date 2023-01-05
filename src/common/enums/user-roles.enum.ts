@@ -47,13 +47,16 @@ export enum BusinessType {
     'PROFESSIONAL',
 }
 
-export enum LanguageEnumType {
-    'PRIMARY',
-    'SECONDARY'
-}
-
 export enum AddressTypeEnum {
     'REGISTERED' = 'REGISTERED',
     'BUSINESS_HQ' = 'BUSINESS_HQ',
     'AGENT' = 'AGENT',
+}
+
+export enum DesignationTypeEnum {
+    'PARTNER' = 'PARTNER',
+    'OF_COUNSEL' = 'OF_COUNSEL',
+    'ASSOCIATE' = 'ASSOCIATE',
+    'SOLO_PRACTITIONER' = 'SOLO_PRACTITIONER',
+    'OTHER' = 'OTHER',
 }

@@ -1,15 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsArray, Max, IsString, IsNotEmpty, IsBoolean, IsEnum, IsNumber, IsOptional } from 'class-validator';
-import { AddressTypeEnum, BillingStructure, LanguageEnumType, OralProficiency, UserType, VerifyCodeSource } from '../../common/enums';
+import { IsEmail, IsArray, IsString, IsNotEmpty, IsBoolean, IsEnum, IsNumber, IsOptional } from 'class-validator';
+import { AddressTypeEnum, BillingStructure, DesignationTypeEnum, OralProficiency, UserType, VerifyCodeSource } from '../../common/enums';
 import { OfficeType, RepresentType, SubscriptionPackages, BusinessType as BusinessTypeEnum } from '../../common/enums';
 
 class AddressType {
   @ApiProperty({
     type: String,
+    example: 'address detail'
   })
   @IsString()
   @IsNotEmpty()
   address: string;
+
+  @ApiProperty({ enum: OfficeType })
+  @IsEnum(OfficeType)
+  @IsString()
+  @IsOptional()
+  officeType?: string;
 
   @ApiProperty({
     enum: AddressTypeEnum,
@@ -19,14 +26,16 @@ class AddressType {
   addressType: string;
 
   @ApiProperty({
-    type: Number,
+    type: String,
+    example: '00112'
   })
   @IsString()
   @IsNotEmpty()
-  postalCode: number;
+  postalCode: String;
 
   @ApiProperty({
     type: String,
+    example: 'NY'
   })
   @IsString()
   @IsNotEmpty()
@@ -34,6 +43,7 @@ class AddressType {
 
   @ApiProperty({
     type: String,
+    example: 'stateId'
   })
   @IsString()
   @IsNotEmpty()
@@ -41,6 +51,7 @@ class AddressType {
 
   @ApiProperty({
     type: String,
+    example: 'country'
   })
   @IsString()
   @IsNotEmpty()
@@ -50,6 +61,7 @@ class AddressType {
 class BusinessType {
   @ApiProperty({
     type: String,
+    example: 'Business name'
   })
   @IsString()
   @IsNotEmpty()
@@ -57,6 +69,7 @@ class BusinessType {
 
   @ApiProperty({
     type: Boolean,
+    example: true
   })
   @IsBoolean()
   @IsOptional()
@@ -70,14 +83,15 @@ class BusinessType {
   businessType?: BusinessTypeEnum;
 
   @ApiProperty({
-    type: String,
+    type: Date,
   })
   @IsString()
   @IsOptional()
-  registeredDate?: string;
+  registeredDate?: Date;
 
   @ApiProperty({
     type: String,
+    example: 'EIN 1'
   })
   @IsString()
   @IsOptional()
@@ -85,6 +99,7 @@ class BusinessType {
 
   @ApiProperty({
     type: String,
+    example: '45 66539878'
   })
   @IsString()
   @IsOptional()
@@ -92,6 +107,7 @@ class BusinessType {
 
   @ApiProperty({
     type: String,
+    example: 'www.example.com'
   })
   @IsString()
   @IsOptional()
@@ -99,12 +115,16 @@ class BusinessType {
 
   @ApiProperty({
     type: String,
+    example: 'business description'
   })
   @IsString()
   @IsOptional()
   businessDescription?: string;
 
 
+  @ApiProperty({
+    type: [AddressType]
+  })
   @IsArray()
   @IsOptional()
   addresses?: AddressType[];
@@ -114,6 +134,7 @@ class BusinessType {
 class ExperienceType {
   @ApiProperty({
     type: String,
+    example: 'title 1'
   })
   @IsString()
   @IsNotEmpty()
@@ -121,6 +142,7 @@ class ExperienceType {
 
   @ApiProperty({
     type: String,
+    example: 'Description'
   })
   @IsString()
   @IsNotEmpty()
@@ -128,6 +150,7 @@ class ExperienceType {
 
   @ApiProperty({
     type: Array,
+    example: ['categoryId']
   })
   @IsArray()
   @IsNotEmpty()
@@ -135,6 +158,7 @@ class ExperienceType {
 
   @ApiProperty({
     type: String,
+    example: 'industry name'
   })
   @IsString()
   @IsNotEmpty()
@@ -142,6 +166,7 @@ class ExperienceType {
 
   @ApiProperty({
     type: String,
+    example: 'court 1'
   })
   @IsString()
   @IsNotEmpty()
@@ -151,17 +176,10 @@ class ExperienceType {
 class LanguageType {
   @ApiProperty({
     type: String,
+    example: 'languageId'
   })
   @IsString()
   language: string;
-
-  @ApiProperty({
-    enum: LanguageEnumType,
-  })
-  @IsEnum(LanguageEnumType)
-  @IsString()
-  @IsOptional()
-  languageType?: string;
 
   @ApiProperty({
     enum: OralProficiency,
@@ -183,6 +201,7 @@ class LanguageType {
 class LicenseType {
   @ApiProperty({
     type: String,
+    example: 'stateId'
   })
   @IsString()
   @IsOptional()
@@ -190,6 +209,7 @@ class LicenseType {
 
   @ApiProperty({
     type: String,
+    example: 'Li-123'
   })
   @IsString()
   @IsOptional()
@@ -198,14 +218,16 @@ class LicenseType {
 
 class ProfileType {
   @ApiProperty({
-    type: String,
+    enum: DesignationTypeEnum
   })
+  @IsEnum(DesignationTypeEnum)
   @IsString()
   @IsOptional()
   designation: string;
 
   @ApiProperty({
     type: String,
+    example: 'Role at the company'
   })
   @IsString()
   @IsOptional()
@@ -213,6 +235,7 @@ class ProfileType {
 
   @ApiProperty({
     type: Number,
+    example: 1
   })
   @IsNumber()
   @IsOptional()
@@ -220,6 +243,7 @@ class ProfileType {
 
   @ApiProperty({
     type: String,
+    example: 'Firm 1'
   })
   @IsString()
   @IsOptional()
@@ -227,6 +251,7 @@ class ProfileType {
 
   @ApiProperty({
     type: String,
+    example: 'firm web name'
   })
   @IsString()
   @IsOptional()
@@ -244,6 +269,7 @@ class ProfileType {
 
   @ApiProperty({
     type: Number,
+    example: 10
   })
   @IsNumber()
   @IsOptional()
@@ -251,6 +277,7 @@ class ProfileType {
 
   @ApiProperty({
     type: Number,
+    example: 10
   })
   @IsNumber()
   @IsOptional()
@@ -258,6 +285,7 @@ class ProfileType {
 
   @ApiProperty({
     type: Number,
+    example: 10
   })
   @IsNumber()
   @IsOptional()
@@ -275,6 +303,7 @@ class ProfileType {
 
   @ApiProperty({
     type: [String],
+    example: ['CategoryId']
   })
   @IsArray()
   @IsOptional()
@@ -296,7 +325,8 @@ class ProfileType {
   licenses?: LicenseType[];
 
   @ApiProperty({
-    type: String,
+    type: [String],
+    example: ['stateId']
   })
   @IsArray()
   @IsOptional()
@@ -304,16 +334,11 @@ class ProfileType {
 
   @ApiProperty({
     type: String,
+    example: 'biography string'
   })
   @IsString()
   @IsOptional()
   biography?: string;
-
-  @ApiProperty({ enum: OfficeType })
-  @IsEnum(OfficeType)
-  @IsString()
-  @IsOptional()
-  officeType?: string;
 
   @ApiProperty({
     type: [LanguageType],

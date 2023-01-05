@@ -1,5 +1,5 @@
 
-import { BillingStructure, OfficeType, OralProficiency, RepresentType, BusinessType, UserType, LanguageEnumType, AddressTypeEnum } from '../../common/enums';
+import { BillingStructure, OfficeType, OralProficiency, RepresentType, BusinessType, UserType, AddressTypeEnum, DesignationTypeEnum } from '../../common/enums';
 import * as mongoose from 'mongoose';
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
@@ -13,17 +13,20 @@ class Address {
   @Prop()
   address: string;
 
+  @Prop({ type: String, enum: OfficeType })
+  officeType: OfficeType;
+
   @Prop({ type: String, enum: AddressTypeEnum })
   addressType: AddressTypeEnum;
 
   @Prop()
-  postalCode: number;
+  postalCode: string;
 
   @Prop()
   city: string;
 
-  @Prop()
-  state: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'State' })
+  state: State;
 
   @Prop()
   country: string;
@@ -81,9 +84,6 @@ class Language {
   @Prop({ type: { type: mongoose.Schema.Types.ObjectId, ref: 'Language' } })
   language: LanguageModel;
 
-  @Prop({ type: String, enum: LanguageEnumType })
-  languageType: LanguageEnumType;
-
   @Prop({ type: String, enum: OralProficiency })
   oralProficiency: OralProficiency;
 
@@ -134,7 +134,7 @@ export class User {
   @Prop()
   emailVerificationAttempts: number;
 
-  @Prop()
+  @Prop({ type: String, enum: DesignationTypeEnum })
   designation: string;
 
   @Prop()
@@ -164,8 +164,8 @@ export class User {
   @Prop([Language])
   languages: Language[]
 
-  @Prop({ type: String, enum: RepresentType })
-  represent: RepresentType;
+  @Prop({ type: [String], enum: RepresentType })
+  represent: RepresentType[];
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }] })
   practiceAreas: Category[];
@@ -181,11 +181,6 @@ export class User {
 
   @Prop()
   biography: string;
-
-  @Prop({ type: String, enum: OfficeType })
-  officeType: OfficeType;
-
-
 
   @Prop([Experience])
   experiences: Experience[];
