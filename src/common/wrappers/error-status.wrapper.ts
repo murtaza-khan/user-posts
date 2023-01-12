@@ -11,13 +11,8 @@ import { ResponseDto } from '../dto/generic-response.dto';
 
 const exceptions = {
   400: BadRequestException,
-  401: UnauthorizedException,
   404: NotFoundException,
-  403: ForbiddenException,
-  409: ConflictException,
   500: InternalServerErrorException,
-  502: InternalServerErrorException,
-  503: InternalServerErrorException,
 };
 
 export const constructErrorResponse = async error => {

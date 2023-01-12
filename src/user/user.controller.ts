@@ -2,34 +2,33 @@ import {
   Controller,
   Post,
   Body,
-  Put,
   Param,
   Get,
-  UseGuards,
   Patch,
-  Request,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { constructSuccessResponse } from '../common/wrappers';
-import { ProfileType } from './Dto/user.types';
+import { ApiTags } from '@nestjs/swagger';
+import { UpdateUserDto, UserDto,  } from './Dto/user.types';
 
 @Controller('user')
-@ApiBearerAuth('JWT-auth')
 @ApiTags('User')
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
-  @UseGuards(AuthGuard('jwt'))
-  @Get('me')
-  async me(@Request() req) {
-    return this.userService.findUserAndPopulateProfile(req.user.email);
+  @Post('')
+  async create(@Body() userData: UserDto): Promise<any> {
+    const user = await this.userService.save(userData);
+    return user;
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Patch('')
-  async update(@Request() req, @Body() data: ProfileType): Promise<any> {
-    return this.userService.updateProfile(data,req.user.person);
+  @Get('/:userId')
+  async user(@Param('userId') userId: string) {
+    return this.userService.findOne(userId);
   }
+
+  @Patch('/:userId')
+  async update(@Param('userId') userId: string, @Body() data: UpdateUserDto): Promise<any> {
+    return this.userService.updateUser(data, userId);
+  }
+
 }
