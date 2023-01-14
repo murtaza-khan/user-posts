@@ -4,7 +4,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: false });
+  const app = await NestFactory.create(AppModule, { cors: true });
+  app.enableCors({origin:'https://react-users-posts.vercel.app/'});
 
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');
