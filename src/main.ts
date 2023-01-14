@@ -4,14 +4,13 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
-  app.enableCors();
+  const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');
   const config = new DocumentBuilder()
-    .setTitle('Lawfirm')
-    .setDescription('Lawfirm APIs Documentation')
+    .setTitle('UserPost')
+    .setDescription('UserPost APIs Documentation')
     .setVersion('1.0')
     .addBearerAuth(
       {
@@ -26,7 +25,7 @@ async function bootstrap() {
     )
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document, {
+  SwaggerModule.setup('swagger/api', app, document, {
     swaggerOptions: { defaultModelsExpandDepth: -1 },
   });
 
