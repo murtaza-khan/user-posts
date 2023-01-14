@@ -10,7 +10,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');
   const config = new DocumentBuilder()
-    .setTitle('UserPost')
+    .setTitle('UsersPost')
     .setDescription('UserPost APIs Documentation')
     .setVersion('1.0')
     .addBearerAuth(
