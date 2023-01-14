@@ -21,14 +21,13 @@ let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
-    async create(userData) {
-        const user = await this.userService.save(userData);
-        return user;
-    }
-    async user(userId, res) {
+    async create(userData, res) {
         res.set('Access-Control-Allow-Origin', '*');
-        const data = this.userService.findOne(userId);
-        return res.send(data);
+        const user = await this.userService.save(userData);
+        return res.send(user);
+    }
+    async user(userId) {
+        return this.userService.findOne(userId);
     }
     async update(userId, data) {
         return this.userService.updateUser(data, userId);
@@ -37,16 +36,16 @@ let UserController = class UserController {
 __decorate([
     (0, common_1.Post)(''),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Response)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_types_1.UserDto]),
+    __metadata("design:paramtypes", [user_types_1.UserDto, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)('/:userId'),
     __param(0, (0, common_1.Param)('userId')),
-    __param(1, (0, common_1.Response)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "user", null);
 __decorate([
