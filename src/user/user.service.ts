@@ -21,7 +21,7 @@ export class UserService {
       await this.beforeCreate(userData);
       let userToSave = await new this.userModel(userData);
       const user = await userToSave.save();
-      await this.cacheManager.set(user.id, user, 0);
+      await this.cacheManager.set(`userId-${user._id}`, user, 0);
 
       return constructSuccessResponse(user, 'User created successfully!');
     } catch (error) {
@@ -30,10 +30,10 @@ export class UserService {
   }
   async findOne(id: any): Promise<any> {
     let user;
-    user = await this.cacheManager.get(id);
+    user = await this.cacheManager.get(`userId-${id}`);
     if (!user) {
       user = await this.userModel.findOne({ _id: id });
-      await this.cacheManager.set(user.id, user, 0);
+      await this.cacheManager.set(`userId-${user._id}`, user, 0);
     }
     return constructSuccessResponse(user, 'User Fetch successfully!');
   }
@@ -47,7 +47,8 @@ export class UserService {
       const user = await this.userModel.findByIdAndUpdate(userId, data, {
         new: true,
       });
-      await this.cacheManager.set(user.id, user, 0);
+      await this.cacheManager.del(`userId-${user._id}`);
+      await this.cacheManager.set(`userId-${user._id}`, user, 0);
       return constructSuccessResponse(user, 'User updated successfully!');
     } catch (error) {
       return error;

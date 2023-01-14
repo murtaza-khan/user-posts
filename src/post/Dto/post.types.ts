@@ -17,34 +17,11 @@ class PostDto {
 
   @ApiProperty({
     type: String,
-    example: 'Post content',
-  })
-  @IsString()
-  @IsNotEmpty()
-  content: string;
-
-  @ApiProperty({
-    type: String,
     example: 'userId',
   })
   @IsString()
   @IsNotEmpty()
   userId: string;
-}
-class ContentDto {
-  @ApiProperty({
-    type: Number,
-  })
-  @IsNumber()
-  @IsOptional()
-  liked: number;
-
-  @ApiProperty({
-    type: String,
-  })
-  @IsString()
-  @IsOptional()
-  comment: string;
 }
 
 class UpdatePostDto {
@@ -63,12 +40,12 @@ class UpdatePostDto {
   liked: number;
 
   @ApiProperty({
-    type: [ContentDto],
-    example: 'Post content',
+    type: [String],
+    example:['Comments'],
   })
   @IsArray()
   @IsOptional()
-  content:ContentDto[] ;
+  comments:[] ;
 }
 
 export { PostDto, UpdatePostDto };

@@ -9,7 +9,7 @@ dotenv.config();
 
 @Module({
   imports: [
-    MongooseModule.forRoot(`${process.env.DATA_BASE}`),
+    MongooseModule.forRoot(`mongodb+srv://lawfirm-user:k8n8NB6VWHw@cluster0.b8zjnqi.mongodb.net/lawyer-up-db`),
     UserModule,
     PostModule
   ],

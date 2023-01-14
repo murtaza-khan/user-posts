@@ -23,8 +23,7 @@ export class PostService {
     try {
       const post = new this.postModel(data);
       const response = await post.save();
-      await this.cacheManager.set(response.id, response, 0);
-      await this.cacheManager.set(data.userId, response, 0);
+      await this.cacheManager.set(`post-${response.id}`, response, 0);
       return constructSuccessResponse(response, 'Post created successfully');
     } catch (error) {
       return error;
@@ -33,10 +32,10 @@ export class PostService {
 
   async findPostById(id?: string): Promise<any> {
     let post;
-    post = await this.cacheManager.get(id);
+    post = await this.cacheManager.get(`post-${id}`);
     if (!post) {
       post = await this.postModel.findById(id);
-      await this.cacheManager.set(post.id, post, 0);
+      await this.cacheManager.set(`post-${post.id}`, post, 0);
     }
     return constructSuccessResponse(post, 'Post fetched successfully');
   }
@@ -46,7 +45,7 @@ export class PostService {
       const post = await this.postModel.findByIdAndUpdate(postId, data, {
         new: true,
       });
-      await this.cacheManager.set(post.id, post, 0);
+      await this.cacheManager.set(`post-${post.id}`, post, 0);
 
       return constructSuccessResponse(post, 'Post updated successfully');
     } catch (error) {
@@ -55,23 +54,14 @@ export class PostService {
   }
 
   async findPostsByUserId(id?: string): Promise<any> {
-    let user;
-    user = await this.cacheManager.get(id);
-    if (!user) {
-      user = await this.userService.findByCriteria({ _id: id });
-      await this.cacheManager.set(user.id, user, 0);
-    }
+    let  user = await this.userService.findByCriteria({ _id: id });
     if (!user) {
       return constructErrorResponse({
         message: 'User not found!',
         status: 404,
       });
     }
-    let posts;
-    posts = await this.cacheManager.get(id);
-    if (!posts) {
-      posts = await this.postModel.find({ userId: id });
-    }
+    let posts = await this.postModel.find({ userId: id });
     user.posts = posts;
     return constructSuccessResponse(user);
   }

@@ -8,15 +8,6 @@ import { User } from '../../user/models/user.model';
 export type PostDocument = HydratedDocument<Post>;
 
 @Schema()
-class ContentDto {
-  @Prop()
-  liked: number;
-
-  @Prop()
-  comment: string;
-}
-
-@Schema()
 export class Post extends BaseModel {
   @Prop()
   title: string;
@@ -24,8 +15,8 @@ export class Post extends BaseModel {
   @Prop()
   liked: number;
 
-  @Prop([ContentDto])
-  content: ContentDto[];
+  @Prop([String])
+  comments: string[];
 
   @Prop( { type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   userId: User;
