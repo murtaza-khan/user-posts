@@ -4,12 +4,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
-  app.enableCors({
-    allowedHeaders: '*',
-    origin: '*',
-    credentials: true,
-  });
+  const app = await NestFactory.create(AppModule);
+  app.enableCors();
   //********** */
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');

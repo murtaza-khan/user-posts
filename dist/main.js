@@ -5,12 +5,8 @@ const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 async function bootstrap() {
-    const app = await core_1.NestFactory.create(app_module_1.AppModule, { cors: true });
-    app.enableCors({
-        allowedHeaders: '*',
-        origin: '*',
-        credentials: true,
-    });
+    const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    app.enableCors();
     app.useGlobalPipes(new common_1.ValidationPipe());
     app.setGlobalPrefix('api');
     const config = new swagger_1.DocumentBuilder()
